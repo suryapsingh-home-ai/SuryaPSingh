@@ -1,0 +1,81 @@
+<nav class="navbar">
+  <div class="nav-inner">
+    <a routerLink="/" class="logo" (click)="clearSearch()">
+      <span class="logo-badge">Angular</span>
+      <span class="logo-text">Demo<strong>Shop</strong></span>
+    </a>
+
+    <form class="search-bar" (submit)="$event.preventDefault(); doSearch()">
+      <input
+        type="search"
+        class="search-input"
+        placeholder="Search products…"
+        aria-label="Search products"
+        [(ngModel)]="searchInput"
+        name="q"
+      />
+      <button type="submit" class="search-btn" aria-label="Search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+      </button>
+    </form>
+
+    <button type="button" class="cart-btn" (click)="cartOpen = !cartOpen">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="9" cy="21" r="1" />
+        <circle cx="20" cy="21" r="1" />
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+      </svg>
+      <span *ngIf="cartCount > 0" class="cart-count">{{ cartCount }}</span>
+      <span class="cart-label">Cart</span>
+    </button>
+  </div>
+
+  <div *ngIf="searchQuery" class="search-hint">
+    Showing results for "<strong>{{ searchQuery }}</strong>"
+    <button type="button" class="clear-search" (click)="clearSearch()">✕ Clear</button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+  <div class="content-area">
+    <section class="catalog">
+      <p *ngIf="loading" class="muted center">Loading products…</p>
+      <p *ngIf="!loading && error && !allProducts.length" class="err center">{{ error }}</p>
+      <p *ngIf="!loading && !error && !filteredProducts.length" class="muted center">
+        No products match "{{ searchQuery }}".
+      </p>
+      <div *ngIf="!loading && filteredProducts.length" class="grid">
+        <article *ngFor="let p of filteredProducts" class="card">
+          <a [routerLink]="['/product', p.slug]" class="card-hit" [attr.aria-label]="'View ' + p.name">
+            <div class="img-wrap">
+              <img *ngIf="p.image_url" [src]="p.image_url" [alt]="p.name" loading="lazy" />
+              <div *ngIf="!p.image_url" class="ph"></div>
+            </div>
+          </a>
+          <div class="card-body">
+            <a [routerLink]="['/product', p.slug]" class="card-title-link">
+              <h2 class="card-title">{{ p.name }}</h2>
+            </a>
+            <span *ngIf="p.category" class="card-category">{{ p.category.name }}</span>
+            <p class="card-desc">{{ p.description }}</p>
+            <div class="star-row">
+              <span class="stars">★★★★☆</span>
+              <span class="review-count">({{ p.stock }} in stock)</span>
+            </div>
+            <div class="price-row">
+              <span class="price">${{ (+p.price).toFixed(2) }}</span>
+            </div>
+            <button type="button" class="add-btn" (click)="$event.preventDefault(); addToCart(p)">
+              Add to Cart
+            </button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <app-cart-panel [(panelOpen)]="cartOpen"></app-cart-panel>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+<aside class="cart-panel" [class.open]="panelOpen">
+  <div class="cart-header">
+    <h3>Shopping Cart</h3>
+    <button type="button" class="close-cart" (click)="close()">✕</button>
+  </div>
+
+  <ng-container *ngIf="lines$ | async as lines">
+    <p *ngIf="!lines.length" class="muted small">Your cart is empty.</p>
+
+    <ul *ngIf="lines.length" class="cart-list">
+      <li *ngFor="let i of lines" class="cart-item">
+        <img
+          *ngIf="i.product.image_url"
+          [src]="i.product.image_url"
+          [alt]="i.product.name"
+          class="cart-thumb"
+        />
+        <div class="cart-item-info">
+          <span class="cart-item-name">{{ i.product.name }}</span>
+          <span class="cart-item-price">${{ (+i.product.price).toFixed(2) }}</span>
+          <div class="qty-row">
+            <button type="button" class="qty-btn" (click)="setQty(i.product.id, i.quantity - 1)">−</button>
+            <span class="qty-val">{{ i.quantity }}</span>
+            <button type="button" class="qty-btn" (click)="setQty(i.product.id, i.quantity + 1)">+</button>
+            <button type="button" class="del-btn" (click)="remove(i.product.id)">Delete</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <div *ngIf="lines.length" class="cart-footer">
+      <div class="subtotal">
+        Subtotal ({{ count(lines) }} item{{ count(lines) !== 1 ? "s" : "" }}):
+        <strong>${{ total(lines).toFixed(2) }}</strong>
+      </div>
+      <label class="lbl">Email for receipt</label>
+      <input
+        type="email"
+        class="input"
+        placeholder="you@example.com"
+        autocomplete="email"
+        [(ngModel)]="email"
+      />
+      <p *ngIf="checkoutError" class="err small">{{ checkoutError }}</p>
+      <button
+        type="button"
+        class="checkout-btn"
+        [disabled]="checkoutLoading"
+        (click)="pay()"
+      >
+        {{ checkoutLoading ? "Redirecting…" : "Proceed to Checkout" }}
+      </button>
+    </div>
+  </ng-container>
+</aside>

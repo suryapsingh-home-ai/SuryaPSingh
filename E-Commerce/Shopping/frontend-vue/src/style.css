@@ -1,0 +1,27 @@
+:root {
+  --bg: #f3f3f3;
+  --surface: #ffffff;
+  --border: #ddd;
+  --text: #111;
+  --muted: #555;
+  --accent: #f90;
+  --accent-hover: #e47911;
+  --accent-dark: #131921;
+  --navbar-bg: #131921;
+  --navbar-search: #fff;
+  --radius: 4px;
+  font-family: "Amazon Ember", "Segoe UI", Arial, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.5;
+}
+
+* { box-sizing: border-box; }
+
+body { margin: 0; min-height: 100vh; background: var(--bg); }
+
+a { color: #0066c0; }
+a:hover { text-decoration: underline; color: #c45500; }
+
+button { font-family: inherit; cursor: pointer; }
+input   { font-family: inherit; }

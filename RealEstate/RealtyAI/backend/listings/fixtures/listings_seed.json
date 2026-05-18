@@ -1,0 +1,128 @@
+[
+  {
+    "model": "listings.listing",
+    "pk": 1,
+    "fields": {
+      "title": "Sunny 2-Bedroom Apartment",
+      "description": "Modern apartment with plenty of light, large windows, and a spacious living area.",
+      "price": "185000.00",
+      "bedrooms": 2,
+      "bathrooms": 2,
+      "area_sqft": 950,
+      "property_type": "apartment",
+      "status": "sale",
+      "address": "123 Elm Street",
+      "city": "San Francisco",
+      "state": "CA",
+      "zipcode": "94107",
+      "image_url": "https://images.unsplash.com/photo-1560184897-0da0a0b15f41?auto=format&fit=crop&w=1200&q=80",
+      "created_at": "2026-05-17T00:00:00Z",
+      "updated_at": "2026-05-17T00:00:00Z"
+    }
+  },
+  {
+    "model": "listings.listing",
+    "pk": 2,
+    "fields": {
+      "title": "Luxury 4-Bedroom Home",
+      "description": "A beautiful single-family house with a gourmet kitchen and private backyard.",
+      "price": "745000.00",
+      "bedrooms": 4,
+      "bathrooms": 3,
+      "area_sqft": 2800,
+      "property_type": "house",
+      "status": "sale",
+      "address": "742 Oak Avenue",
+      "city": "Austin",
+      "state": "TX",
+      "zipcode": "78701",
+      "image_url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "created_at": "2026-05-17T00:00:00Z",
+      "updated_at": "2026-05-17T00:00:00Z"
+    }
+  },
+  {
+    "model": "listings.listing",
+    "pk": 3,
+    "fields": {
+      "title": "Downtown Condo with City View",
+      "description": "Stylish condo with city views, close to transit and vibrant nightlife.",
+      "price": "3200.00",
+      "bedrooms": 1,
+      "bathrooms": 1,
+      "area_sqft": 725,
+      "property_type": "condo",
+      "status": "rent",
+      "address": "55 Market Street",
+      "city": "Chicago",
+      "state": "IL",
+      "zipcode": "60605",
+      "image_url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+      "created_at": "2026-05-17T00:00:00Z",
+      "updated_at": "2026-05-17T00:00:00Z"
+    }
+  },
+  {
+    "model": "listings.listing",
+    "pk": 4,
+    "fields": {
+      "title": "Cozy Suburban Townhome",
+      "description": "Comfortable townhome in a quiet neighborhood with easy access to schools.",
+      "price": "295000.00",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "area_sqft": 1600,
+      "property_type": "apartment",
+      "status": "sale",
+      "address": "210 Maple Lane",
+      "city": "Denver",
+      "state": "CO",
+      "zipcode": "80203",
+      "image_url": "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1200&q=80",
+      "created_at": "2026-05-17T00:00:00Z",
+      "updated_at": "2026-05-17T00:00:00Z"
+    }
+  },
+  {
+    "model": "listings.listing",
+    "pk": 5,
+    "fields": {
+      "title": "Spacious Land Parcel",
+      "description": "Build-ready land parcel with easy highway access and clear zoning.",
+      "price": "210000.00",
+      "bedrooms": 0,
+      "bathrooms": 0,
+      "area_sqft": 15000,
+      "property_type": "land",
+      "status": "sale",
+      "address": "1800 Prairie Road",
+      "city": "Nashville",
+      "state": "TN",
+      "zipcode": "37209",
+      "image_url": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
+      "created_at": "2026-05-17T00:00:00Z",
+      "updated_at": "2026-05-17T00:00:00Z"
+    }
+  },
+  {
+    "model": "listings.listing",
+    "pk": 6,
+    "fields": {
+      "title": "Modern Studio Near University",
+      "description": "Perfect student rental with smart layout, fast internet, and walkable shopping.",
+      "price": "1400.00",
+      "bedrooms": 0,
+      "bathrooms": 1,
+      "area_sqft": 430,
+      "property_type": "condo",
+      "status": "rent",
+      "address": "450 Campus Drive",
+      "city": "Boston",
+      "state": "MA",
+      "zipcode": "02115",
+      "image_url": "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&q=80",
+      "created_at": "2026-05-17T00:00:00Z",
+      "updated_at": "2026-05-17T00:00:00Z"
+    }
+  }
+]

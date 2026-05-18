@@ -1,0 +1,24 @@
+<div class="page-wrap">
+  <div class="success-box">
+    <div class="success-icon">✓</div>
+    <h2>Order Placed!</h2>
+    <p *ngIf="error" class="err">{{ error }}</p>
+    <ng-container *ngIf="!error && order">
+      <p>
+        Status:
+        <strong [class.paid]="order.status === 'paid'">{{ order.status }}</strong>
+      </p>
+      <p>Email: {{ order.customer_email }}</p>
+      <p>Total: <strong>${{ (+order.total).toFixed(2) }}</strong></p>
+      <ul class="order-items">
+        <li *ngFor="let it of order.items">{{ it.product_name }} × {{ it.quantity }}</li>
+      </ul>
+      <p *ngIf="order.status === 'pending'" class="muted small">
+        Order will be marked <em>paid</em> once Stripe confirms via webhook. Refresh in a moment if
+        testing with the Stripe CLI.
+      </p>
+    </ng-container>
+    <p *ngIf="!error && !order" class="muted">Loading order details…</p>
+    <a routerLink="/" class="back-btn">← Continue Shopping</a>
+  </div>
+</div>

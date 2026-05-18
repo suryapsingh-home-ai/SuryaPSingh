@@ -1,0 +1,18 @@
+# Python
+backend/.venv
+backend/__pycache__
+backend/*/__pycache__
+backend/*.pyc
+backend/*.pyo
+backend/*.pyd
+backend/Pipfile.lock
+
+# Node
+frontend/node_modules
+frontend/dist
+
+# VS Code
+.vscode
+
+# Environment
+backend/.env

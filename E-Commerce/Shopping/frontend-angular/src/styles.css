@@ -1,0 +1,24 @@
+:root {
+  --navbar-bg: #131921;
+  --accent: #f90;
+  --accent-hover: #e47911;
+  --surface: #fff;
+  --border: #ddd;
+  --muted: #555;
+  --radius: 4px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: #eaeded;
+  color: #111;
+}
+
+a {
+  color: #0066c0;
+}

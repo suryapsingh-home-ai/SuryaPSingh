@@ -1,0 +1,20 @@
+{
+  "name": "shopping-vue",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5173",
+    "build": "vite build",
+    "preview": "vite preview --port 5173"
+  },
+  "dependencies": {
+    "vue": "^3.4.27"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^2.3.4",
+    "vite": "^2.9.18"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
