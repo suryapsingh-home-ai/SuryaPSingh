@@ -1,4 +1,6 @@
 node_modules/
-.angular/cache
+.angular/
 dist/
 .env
+**/__pycache__/
+**/*.pyc
