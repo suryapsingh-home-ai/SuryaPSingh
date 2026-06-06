@@ -53,8 +53,8 @@ exports.sendConnectionRequest = async (req, res) => {
 
     // Create connection request
     const result = await db.query(
-      'INSERT INTO friendships (user_id_1, user_id_2, status) VALUES ($1, $2, $3) RETURNING *',
-      [...normalizedIds, 'pending']
+      'INSERT INTO friendships (user_id_1, user_id_2, requested_by, status) VALUES ($1, $2, $3, $4) RETURNING *',
+      [...normalizedIds, userId, 'pending']
     )
 
     res.status(201).json({
@@ -73,10 +73,12 @@ exports.getPendingRequests = async (req, res) => {
     const userId = req.user.id
 
     const result = await db.query(
-      `SELECT f.id, f.user_id_1 as sender_id, u.username, u.bio 
-       FROM friendships f 
-       JOIN users u ON u.id = f.user_id_1 
-       WHERE f.user_id_2 = $1 AND f.status = 'pending'`,
+      `SELECT f.id, f.requested_by as sender_id, u.username, u.bio
+       FROM friendships f
+       JOIN users u ON u.id = f.requested_by
+       WHERE f.status = 'pending'
+         AND f.requested_by != $1
+         AND (f.user_id_1 = $1 OR f.user_id_2 = $1)`,
       [userId]
     )
 
@@ -94,7 +96,9 @@ exports.acceptConnectionRequest = async (req, res) => {
     const userId = req.user.id
 
     const result = await db.query(
-      'UPDATE friendships SET status = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 AND user_id_2 = $3 RETURNING *',
+      `UPDATE friendships SET status = $1, updated_at = CURRENT_TIMESTAMP
+       WHERE id = $2 AND status = 'pending' AND requested_by != $3
+         AND (user_id_1 = $3 OR user_id_2 = $3) RETURNING *`,
       ['accepted', connectionId, userId]
     )
 
@@ -119,7 +123,9 @@ exports.rejectConnectionRequest = async (req, res) => {
     const userId = req.user.id
 
     const result = await db.query(
-      'DELETE FROM friendships WHERE id = $1 AND user_id_2 = $2 RETURNING *',
+      `DELETE FROM friendships
+       WHERE id = $1 AND status = 'pending' AND requested_by != $2
+         AND (user_id_1 = $2 OR user_id_2 = $2) RETURNING *`,
       [connectionId, userId]
     )
 

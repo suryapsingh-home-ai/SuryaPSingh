@@ -1,12 +1,17 @@
+/**
+ * Top-level Angular routes — merges public, seller, and admin route modules.
+ * ===========================================================================
+ * SHELL: each submodule reads LISTING_SCHEMA.id for path segments.
+ */
 import { Routes } from '@angular/router';
-import { ListingListComponent } from './listing-list.component';
-import { ListingDetailComponent } from './listing-detail.component';
-import { HomeComponent } from './home.component';
+
+import { adminRoutes } from './shared/admin/admin.routes';
+import { sellerRoutes } from './shared/seller/seller.routes';
+import { listingRoutes } from './shared/listing/listing.routes';
 
 export const appRoutes: Routes = [
-  { path: '', component: ListingListComponent },
-  { path: 'home', component: HomeComponent },
-  { path: 'listings', component: ListingListComponent },
-  { path: 'listing/:id', component: ListingDetailComponent },
+  ...listingRoutes,
+  ...sellerRoutes,
+  ...adminRoutes,
   { path: '**', redirectTo: '' },
 ];

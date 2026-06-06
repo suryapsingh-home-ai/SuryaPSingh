@@ -1,0 +1,143 @@
+@page "/admin/blog"
+@layout AdminLayout
+@attribute [Authorize(Roles = "Admin")]
+@rendermode InteractiveServer
+@inject IBlogService BlogService
+
+<PageTitle>Blog Posts — Admin</PageTitle>
+
+<div class="admin-toolbar">
+    <h2>Blog Posts</h2>
+    <button type="button" class="btn btn-primary" @onclick="ShowCreate">Add Post</button>
+</div>
+
+@if (showForm)
+{
+    <div class="admin-panel">
+        <EditForm Model="editing" OnValidSubmit="Save">
+            <div class="form-group">
+                <label>Title</label>
+                <InputText @bind-Value="editing.Title" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Slug (URL)</label>
+                <InputText @bind-Value="editing.Slug" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <InputSelect @bind-Value="editing.CategoryId" class="form-control">
+                    @foreach (var cat in categories)
+                    {
+                        <option value="@cat.Id">@cat.Name</option>
+                    }
+                </InputSelect>
+            </div>
+            <div class="form-group">
+                <label>Summary</label>
+                <InputTextArea @bind-Value="editing.Summary" class="form-control" rows="2" />
+            </div>
+            <div class="form-group">
+                <label>Content (Markdown)</label>
+                <InputTextArea @bind-Value="editing.Content" class="form-control" rows="12" />
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Published Date</label>
+                    <InputDate @bind-Value="publishedDate" class="form-control" />
+                </div>
+                <div class="form-group form-check-inline">
+                    <InputCheckbox @bind-Value="editing.IsPublished" id="published" />
+                    <label for="published">Published</label>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-outline" @onclick="() => showForm = false">Cancel</button>
+            </div>
+        </EditForm>
+    </div>
+}
+
+<table class="admin-table">
+    <thead>
+        <tr><th>Title</th><th>Category</th><th>Published</th><th>Date</th><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (var post in posts)
+        {
+            <tr>
+                <td>@post.Title</td>
+                <td>@post.Category.Name</td>
+                <td>@(post.IsPublished ? "Yes" : "Draft")</td>
+                <td>@post.PublishedAt.ToString("yyyy-MM-dd")</td>
+                <td class="table-actions">
+                    <button type="button" class="btn btn-sm btn-outline" @onclick="() => Edit(post)">Edit</button>
+                    <button type="button" class="btn btn-sm btn-danger" @onclick="() => Delete(post.Id)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private IReadOnlyList<BlogPost> posts = [];
+    private IReadOnlyList<BlogCategory> categories = [];
+    private BlogPost editing = new();
+    private DateTime publishedDate = DateTime.UtcNow.Date;
+    private bool showForm;
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await BlogService.GetCategoriesAsync();
+        await Reload();
+    }
+
+    private async Task Reload() =>
+        posts = await BlogService.GetAllPostsAsync();
+
+    private void ShowCreate()
+    {
+        editing = new BlogPost
+        {
+            CategoryId = categories.FirstOrDefault()?.Id ?? 0,
+            IsPublished = false,
+            PublishedAt = DateTime.UtcNow
+        };
+        publishedDate = DateTime.UtcNow.Date;
+        showForm = true;
+    }
+
+    private void Edit(BlogPost post)
+    {
+        editing = new BlogPost
+        {
+            Id = post.Id,
+            Title = post.Title,
+            Slug = post.Slug,
+            Summary = post.Summary,
+            Content = post.Content,
+            CategoryId = post.CategoryId,
+            IsPublished = post.IsPublished,
+            PublishedAt = post.PublishedAt
+        };
+        publishedDate = post.PublishedAt.Date;
+        showForm = true;
+    }
+
+    private async Task Save()
+    {
+        editing.PublishedAt = publishedDate.ToUniversalTime();
+        if (string.IsNullOrWhiteSpace(editing.Slug))
+            editing.Slug = editing.Title.ToLowerInvariant().Replace(' ', '-');
+
+        await BlogService.SavePostAsync(editing);
+        showForm = false;
+        await Reload();
+    }
+
+    private async Task Delete(int id)
+    {
+        await BlogService.DeletePostAsync(id);
+        await Reload();
+    }
+}

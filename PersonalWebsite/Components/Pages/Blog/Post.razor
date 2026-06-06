@@ -1,0 +1,39 @@
+@page "/blog/{Slug}"
+@inject IBlogService BlogService
+@inject NavigationManager Navigation
+
+<PageTitle>@(post?.Title ?? "Blog") — Surya P. Singh</PageTitle>
+
+@if (post is null)
+{
+    <section class="section">
+        <div class="container">
+            <h1>Post not found</h1>
+            <a href="/blog" class="text-link">← Back to blog</a>
+        </div>
+    </section>
+}
+else
+{
+    <article class="section blog-article">
+        <div class="container container-narrow">
+            <a href="/blog" class="text-link">← Back to blog</a>
+            <span class="blog-category">@post.Category.Name</span>
+            <h1>@post.Title</h1>
+            <time datetime="@post.PublishedAt.ToString("yyyy-MM-dd")" class="article-date">
+                @post.PublishedAt.ToString("MMMM d, yyyy")
+            </time>
+            <MarkdownContent Content="@post.Content" />
+        </div>
+    </article>
+}
+
+@code {
+    [Parameter] public string Slug { get; set; } = string.Empty;
+    private BlogPost? post;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        post = await BlogService.GetPostBySlugAsync(Slug);
+    }
+}

@@ -2,7 +2,7 @@
   "$schema": "https://angular.io/config/angular.json",
   "version": 1,
   "projects": {
-    "realtyai-frontend": {
+    "listing-platform-frontend": {
       "projectType": "application",
       "root": "",
       "sourceRoot": "src",
@@ -11,7 +11,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/realtyai-frontend",
+            "outputPath": "dist/listing-platform-frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -43,18 +43,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "realtyai-frontend:build"
+            "browserTarget": "listing-platform-frontend:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "realtyai-frontend:build:production"
+              "browserTarget": "listing-platform-frontend:build:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "realtyai-frontend",
+  "defaultProject": "listing-platform-frontend",
   "cli": {
     "analytics": false
   }

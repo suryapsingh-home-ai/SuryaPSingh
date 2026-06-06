@@ -1,0 +1,113 @@
+<div class="container admin-page">
+
+  <a [routerLink]="managePath" class="back-link">← Back to my {{ schema.labels.plural.toLowerCase() }}</a>
+
+
+
+  <div class="card admin-card">
+
+    <div class="card-content">
+
+      <h1>{{ isEdit ? 'Edit' : 'List' }} {{ schema.labels.singular }}</h1>
+
+      <p *ngIf="!isEdit" class="hint">Your listing will be reviewed by an admin before it appears on the site.</p>
+
+
+
+      <div *ngIf="loading" class="loading">Loading…</div>
+
+
+
+      <form *ngIf="!loading" (ngSubmit)="onSubmit()" class="admin-form">
+
+        <label *ngFor="let field of formFields">
+
+          {{ field.label }}
+
+          <span *ngIf="field.required" class="required">*</span>
+
+
+
+          <select *ngIf="isChoice(field)" [(ngModel)]="formData[field.name]" [name]="field.name" [required]="field.required">
+
+            <option *ngFor="let choice of field.choices" [value]="choice[0]">{{ choice[1] }}</option>
+
+          </select>
+
+
+
+          <textarea
+
+            *ngIf="isTextArea(field)"
+
+            [(ngModel)]="formData[field.name]"
+
+            [name]="field.name"
+
+            rows="4"
+
+          ></textarea>
+
+
+
+          <input
+
+            *ngIf="isNumber(field)"
+
+            type="number"
+
+            [(ngModel)]="formData[field.name]"
+
+            [name]="field.name"
+
+            [required]="field.required"
+
+          />
+
+
+
+          <input
+
+            *ngIf="!isChoice(field) && !isTextArea(field) && !isNumber(field)"
+
+            [type]="field.type === 'url' ? 'url' : 'text'"
+
+            [(ngModel)]="formData[field.name]"
+
+            [name]="field.name"
+
+            [required]="field.required"
+
+          />
+
+        </label>
+
+
+
+        <p class="success" *ngIf="success">{{ success }}</p>
+
+        <p class="error" *ngIf="error">{{ error }}</p>
+
+
+
+        <div class="admin-form-actions">
+
+          <button class="btn" type="submit" [disabled]="saving">
+
+            {{ saving ? 'Saving…' : (isEdit ? 'Update' : 'Submit for approval') }}
+
+          </button>
+
+          <a [routerLink]="managePath" class="btn btn-secondary">Cancel</a>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
+
+

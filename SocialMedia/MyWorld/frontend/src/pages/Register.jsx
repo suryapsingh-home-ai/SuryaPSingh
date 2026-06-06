@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import axios from 'axios'
+import { useMutation } from '@apollo/client'
 import { useNavigate, Link } from 'react-router-dom'
+import { REGISTER } from '../graphql/operations'
 import './Auth.css'
 
 function Register({ setIsLoggedIn, setUser }) {
@@ -9,8 +10,19 @@ function Register({ setIsLoggedIn, setUser }) {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+
+  const [register, { loading }] = useMutation(REGISTER, {
+    onCompleted: (data) => {
+      localStorage.setItem('token', data.register.token)
+      setIsLoggedIn(true)
+      setUser(data.register.user)
+      navigate('/')
+    },
+    onError: (err) => {
+      setError(err.message || 'Registration failed')
+    },
+  })
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -26,30 +38,16 @@ function Register({ setIsLoggedIn, setUser }) {
       return
     }
 
-    setLoading(true)
-
-    try {
-      const response = await axios.post('http://localhost:5000/auth/register', { 
-        username, 
-        email, 
-        password 
-      })
-      localStorage.setItem('token', response.data.token)
-      setIsLoggedIn(true)
-      setUser(response.data.user)
-      navigate('/')
-    } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed')
-    } finally {
-      setLoading(false)
-    }
+    await register({ variables: { username, email, password } })
   }
 
   return (
     <div className="auth-container">
       <div className="auth-box">
         <h1 className="auth-title">MyWorld</h1>
-        <h2 style={{ textAlign: 'center', fontSize: '18px', color: '#666', marginBottom: '20px' }}>Sign Up</h2>
+        <h2 style={{ textAlign: 'center', fontSize: '18px', color: '#666', marginBottom: '20px' }}>
+          Sign Up
+        </h2>
         <form onSubmit={handleSubmit} className="auth-form">
           {error && <div className="auth-error">{error}</div>}
           <input
@@ -85,7 +83,10 @@ function Register({ setIsLoggedIn, setUser }) {
           </button>
         </form>
         <p style={{ textAlign: 'center', marginTop: '15px', fontSize: '14px' }}>
-          Already have an account? <Link to="/login" style={{ color: '#0066cc', textDecoration: 'none' }}>Login here</Link>
+          Already have an account?{' '}
+          <Link to="/login" style={{ color: '#0066cc', textDecoration: 'none' }}>
+            Login here
+          </Link>
         </p>
       </div>
     </div>

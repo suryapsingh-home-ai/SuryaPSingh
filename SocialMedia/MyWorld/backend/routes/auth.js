@@ -3,6 +3,7 @@ const router = express.Router()
 const pool = require('../db')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const { authMiddleware } = require('../middleware/auth')
 
 // Register
 router.post('/register', async (req, res) => {
@@ -84,7 +85,7 @@ router.post('/login', async (req, res) => {
 })
 
 // Get profile
-router.get('/profile', async (req, res) => {
+router.get('/profile', authMiddleware, async (req, res) => {
   try {
     const result = await pool.query('SELECT id, username, email, bio FROM users WHERE id = $1', [req.userId])
     const user = result.rows[0]

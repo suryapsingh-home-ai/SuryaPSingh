@@ -1,0 +1,88 @@
+@rendermode InteractiveServer
+@inject IContactService ContactService
+
+<section id="contact" class="section contact-section">
+    <div class="container">
+        <h2 class="section-title">Contact Me</h2>
+        <p class="section-lead">Have a question or opportunity? Send me a message and I'll get back to you.</p>
+
+        @if (submitted)
+        {
+            <div class="alert alert-success">Thank you! Your message has been sent successfully.</div>
+        }
+        else
+        {
+            <EditForm Model="model" OnValidSubmit="HandleSubmit" class="contact-form">
+                <DataAnnotationsValidator />
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <InputText id="name" @bind-Value="model.Name" class="form-control" placeholder="Your name" />
+                        <ValidationMessage For="() => model.Name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <InputText id="email" @bind-Value="model.Email" class="form-control" placeholder="you@example.com" />
+                        <ValidationMessage For="() => model.Email" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <InputText id="phone" @bind-Value="model.Phone" class="form-control" placeholder="+1 (555) 000-0000" />
+                    <ValidationMessage For="() => model.Phone" />
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <InputTextArea id="message" @bind-Value="model.Message"
+                                     @bind-Value:after="OnMessageChanged"
+                                     class="form-control" rows="6"
+                                     maxlength="1000"
+                                     placeholder="Write your message here..." />
+                    <div class="char-count @(remainingChars <= 50 ? "char-count-warn" : "")">
+                        @remainingChars characters remaining
+                    </div>
+                    <ValidationMessage For="() => model.Message" />
+                </div>
+
+                <button type="submit" class="btn btn-primary" disabled="@isSubmitting">
+                    @(isSubmitting ? "Sending..." : "Send Message")
+                </button>
+            </EditForm>
+        }
+    </div>
+</section>
+
+@code {
+    private ContactFormModel model = new();
+    private bool submitted;
+    private bool isSubmitting;
+    private int remainingChars = 1000;
+
+    private void OnMessageChanged()
+    {
+        remainingChars = 1000 - (model.Message?.Length ?? 0);
+    }
+
+    private async Task HandleSubmit()
+    {
+        isSubmitting = true;
+        try
+        {
+            await ContactService.SubmitMessageAsync(new ContactMessage
+            {
+                Name = model.Name,
+                Email = model.Email,
+                Phone = model.Phone,
+                Message = model.Message
+            });
+            submitted = true;
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+    }
+}

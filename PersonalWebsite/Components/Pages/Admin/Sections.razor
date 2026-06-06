@@ -1,0 +1,123 @@
+@page "/admin/sections"
+@layout AdminLayout
+@attribute [Authorize(Roles = "Admin")]
+@rendermode InteractiveServer
+@inject ISiteContentService SiteContent
+
+<PageTitle>Sections — Admin</PageTitle>
+
+<div class="admin-toolbar">
+    <h2>Site Sections</h2>
+    <button type="button" class="btn btn-primary" @onclick="ShowCreate">Add Section</button>
+</div>
+
+@if (showForm)
+{
+    <div class="admin-panel">
+        <h3>@(editing.Id == 0 ? "New Section" : "Edit Section")</h3>
+        <EditForm Model="editing" OnValidSubmit="Save">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Key (URL anchor)</label>
+                    <InputText @bind-Value="editing.Key" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Title</label>
+                    <InputText @bind-Value="editing.Title" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Sort Order</label>
+                    <InputNumber @bind-Value="editing.SortOrder" class="form-control" />
+                </div>
+                <div class="form-group form-check-inline">
+                    <InputCheckbox @bind-Value="editing.IsVisible" id="visible" />
+                    <label for="visible">Visible on site</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Content (Markdown supported)</label>
+                <InputTextArea @bind-Value="editing.Content" class="form-control" rows="10" />
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-outline" @onclick="CancelForm">Cancel</button>
+            </div>
+        </EditForm>
+    </div>
+}
+
+<table class="admin-table">
+    <thead>
+        <tr>
+            <th>Key</th>
+            <th>Title</th>
+            <th>Order</th>
+            <th>Visible</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var siteSection in sections)
+        {
+            <tr>
+                <td>@siteSection.Key</td>
+                <td>@siteSection.Title</td>
+                <td>@siteSection.SortOrder</td>
+                <td>@(siteSection.IsVisible ? "Yes" : "No")</td>
+                <td class="table-actions">
+                    <button type="button" class="btn btn-sm btn-outline" @onclick="() => Edit(siteSection)">Edit</button>
+                    <button type="button" class="btn btn-sm btn-danger" @onclick="() => Delete(siteSection.Id)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private IReadOnlyList<SiteSection> sections = [];
+    private SiteSection editing = new();
+    private bool showForm;
+
+    protected override async Task OnInitializedAsync() =>
+        await Reload();
+
+    private async Task Reload() =>
+        sections = await SiteContent.GetAllSectionsAsync();
+
+    private void ShowCreate()
+    {
+        editing = new SiteSection { SortOrder = sections.Count + 1, IsVisible = true };
+        showForm = true;
+    }
+
+    private void Edit(SiteSection section)
+    {
+        editing = new SiteSection
+        {
+            Id = section.Id,
+            Key = section.Key,
+            Title = section.Title,
+            Content = section.Content,
+            SortOrder = section.SortOrder,
+            IsVisible = section.IsVisible
+        };
+        showForm = true;
+    }
+
+    private void CancelForm() => showForm = false;
+
+    private async Task Save()
+    {
+        await SiteContent.SaveSectionAsync(editing);
+        showForm = false;
+        await Reload();
+    }
+
+    private async Task Delete(int id)
+    {
+        await SiteContent.DeleteSectionAsync(id);
+        await Reload();
+    }
+}

@@ -1,0 +1,29 @@
+@inherits LayoutComponentBase
+
+<div class="admin-shell">
+    <aside class="admin-sidebar">
+        <div class="admin-brand">Site Admin</div>
+        <nav class="admin-nav">
+            <NavLink href="/admin" Match="NavLinkMatch.All">Dashboard</NavLink>
+            <NavLink href="/admin/profile">Profile</NavLink>
+            <NavLink href="/admin/sections">Sections</NavLink>
+            <NavLink href="/admin/skills">Skills</NavLink>
+            <NavLink href="/admin/projects">Projects</NavLink>
+            <NavLink href="/admin/blog">Blog Posts</NavLink>
+            <NavLink href="/admin/categories">Categories</NavLink>
+            <NavLink href="/admin/messages">Messages</NavLink>
+        </nav>
+        <div class="admin-sidebar-footer">
+            <a href="/" target="_blank">View site</a>
+            <a href="/admin/logout">Sign out</a>
+        </div>
+    </aside>
+    <div class="admin-content">
+        <header class="admin-topbar">
+            <h1>Content Management</h1>
+        </header>
+        <div class="admin-page">
+            @Body
+        </div>
+    </div>
+</div>

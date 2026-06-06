@@ -1,115 +1,74 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useLazyQuery, useQuery, useMutation } from '@apollo/client'
+import {
+  SEARCH_USERS,
+  GET_PENDING_REQUESTS,
+  GET_CONNECTIONS,
+  SEND_CONNECTION_REQUEST,
+  ACCEPT_CONNECTION_REQUEST,
+  REJECT_CONNECTION_REQUEST,
+} from '../graphql/operations'
 import './Connections.css'
 
 const Connections = () => {
   const [searchQuery, setSearchQuery] = useState('')
-  const [searchResults, setSearchResults] = useState([])
-  const [pendingRequests, setPendingRequests] = useState([])
-  const [connections, setConnections] = useState([])
   const [activeTab, setActiveTab] = useState('search')
-  const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    if (activeTab === 'pending') {
-      fetchPendingRequests()
-    } else if (activeTab === 'connections') {
-      fetchConnections()
-    }
-  }, [activeTab])
+  const [searchUsers, { data: searchData, loading: searchLoading }] =
+    useLazyQuery(SEARCH_USERS)
 
-  const handleSearch = async (e) => {
+  const { data: pendingData, loading: pendingLoading, refetch: refetchPending } =
+    useQuery(GET_PENDING_REQUESTS, { skip: activeTab !== 'pending' })
+
+  const { data: connectionsData, loading: connectionsLoading, refetch: refetchConnections } =
+    useQuery(GET_CONNECTIONS, { skip: activeTab !== 'connections' })
+
+  const [sendRequest] = useMutation(SEND_CONNECTION_REQUEST)
+  const [acceptRequest] = useMutation(ACCEPT_CONNECTION_REQUEST)
+  const [rejectRequest] = useMutation(REJECT_CONNECTION_REQUEST)
+
+  const handleSearch = (e) => {
     const query = e.target.value
     setSearchQuery(query)
 
     if (query.length > 0) {
-      setLoading(true)
-      try {
-        const response = await axios.get('/connections/search', {
-          params: { query },
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-        })
-        setSearchResults(response.data)
-      } catch (error) {
-        console.error('Search error:', error)
-      } finally {
-        setLoading(false)
-      }
-    } else {
-      setSearchResults([])
+      searchUsers({ variables: { query } })
     }
   }
 
   const sendConnectionRequest = async (recipientId) => {
     try {
-      await axios.post(
-        '/connections/request',
-        { recipientId },
-        { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
-      )
+      await sendRequest({ variables: { recipientId: String(recipientId) } })
       alert('Connection request sent!')
       setSearchQuery('')
-      setSearchResults([])
     } catch (error) {
-      console.error('Send request error:', error)
-      alert(error.response?.data?.error || 'Failed to send request')
+      alert(error.message || 'Failed to send request')
     }
   }
 
-  const fetchPendingRequests = async () => {
-    setLoading(true)
+  const acceptConnection = async (connectionId) => {
     try {
-      const response = await axios.get('/connections/requests/pending', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      })
-      setPendingRequests(response.data)
-    } catch (error) {
-      console.error('Fetch pending requests error:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const acceptRequest = async (connectionId) => {
-    try {
-      await axios.post(
-        '/connections/requests/accept',
-        { connectionId },
-        { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
-      )
-      fetchPendingRequests()
-      fetchConnections()
+      await acceptRequest({ variables: { connectionId: String(connectionId) } })
+      refetchPending()
+      refetchConnections()
     } catch (error) {
       console.error('Accept request error:', error)
     }
   }
 
-  const rejectRequest = async (connectionId) => {
+  const rejectConnection = async (connectionId) => {
     try {
-      await axios.post(
-        '/connections/requests/reject',
-        { connectionId },
-        { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
-      )
-      fetchPendingRequests()
+      await rejectRequest({ variables: { connectionId: String(connectionId) } })
+      refetchPending()
     } catch (error) {
       console.error('Reject request error:', error)
     }
   }
 
-  const fetchConnections = async () => {
-    setLoading(true)
-    try {
-      const response = await axios.get('/connections/list', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      })
-      setConnections(response.data)
-    } catch (error) {
-      console.error('Fetch connections error:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const searchResults = searchQuery.length > 0 ? searchData?.searchUsers || [] : []
+  const pendingRequests = pendingData?.pendingConnectionRequests || []
+  const connections = connectionsData?.connections || []
 
   return (
     <div className="connections-container">
@@ -146,12 +105,14 @@ const Connections = () => {
             className="search-input"
           />
 
-          {loading && <p>Loading...</p>}
+          {searchLoading && <p>Loading...</p>}
 
           <div className="search-results">
             {searchResults.map((user) => (
               <div key={user.id} className="user-card">
-                <h3>{user.username}</h3>
+                <h3>
+                  <Link to={`/profile/${user.id}`}>@{user.username}</Link>
+                </h3>
                 <p>{user.bio}</p>
                 <button onClick={() => sendConnectionRequest(user.id)}>
                   Send Connection Request
@@ -164,7 +125,7 @@ const Connections = () => {
 
       {activeTab === 'pending' && (
         <div className="pending-section">
-          {loading ? (
+          {pendingLoading ? (
             <p>Loading...</p>
           ) : pendingRequests.length === 0 ? (
             <p>No pending requests</p>
@@ -174,8 +135,8 @@ const Connections = () => {
                 <h3>{request.username}</h3>
                 <p>{request.bio}</p>
                 <div className="request-actions">
-                  <button onClick={() => acceptRequest(request.id)}>Accept</button>
-                  <button onClick={() => rejectRequest(request.id)}>Reject</button>
+                  <button onClick={() => acceptConnection(request.id)}>Accept</button>
+                  <button onClick={() => rejectConnection(request.id)}>Reject</button>
                 </div>
               </div>
             ))
@@ -185,14 +146,18 @@ const Connections = () => {
 
       {activeTab === 'connections' && (
         <div className="connections-section">
-          {loading ? (
+          {connectionsLoading ? (
             <p>Loading...</p>
           ) : connections.length === 0 ? (
             <p>No connections yet</p>
           ) : (
             connections.map((connection) => (
-              <div key={connection.friend_id} className="connection-card">
-                <h3>{connection.username}</h3>
+              <div key={connection.friendId} className="connection-card">
+                <h3>
+                  <Link to={`/profile/${connection.friendId}`}>
+                    @{connection.username}
+                  </Link>
+                </h3>
                 <p>{connection.bio}</p>
               </div>
             ))

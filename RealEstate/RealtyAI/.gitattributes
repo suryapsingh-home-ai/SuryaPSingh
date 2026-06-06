@@ -1,0 +1,3 @@
+# Exclude generated/vendor files from GitHub language statistics
+frontend/package-lock.json linguist-generated=true
+frontend/.angular/** linguist-vendored=true

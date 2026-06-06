@@ -1,4 +1,51 @@
+# Dependencies
 node_modules/
+
+# Environment & secrets
 .env
-.angular/cache
+.env.local
+*.user
+
+# Build outputs
 dist/
+build/
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.cache
+
+# .NET
+.vs/
+*.csproj.user
+project.lock.json
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+db.sqlite3
+*.egg-info/
+
+# Angular
+.angular/
+
+# Go
+backend/bin/
+backend/data/
+*.db
+
+# IDE & OS
+.DS_Store
+Thumbs.db
+*.tsbuildinfo
+
+# Local databases (app-specific)
+ai_agent_cortex.db
+*.db-shm
+*.db-wal
+
+# Copilot / local tooling
+**/.github/copilot-instructions.md

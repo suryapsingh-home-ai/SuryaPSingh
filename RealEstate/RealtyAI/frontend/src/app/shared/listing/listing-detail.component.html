@@ -1,0 +1,65 @@
+<div class="detail-page">
+  <div class="container" *ngIf="loading">
+    <p class="loading">Loading {{ schema.labels.singular.toLowerCase() }} details...</p>
+  </div>
+
+  <div class="container" *ngIf="!loading && !item">
+    <p class="no-results">{{ schema.labels.singular }} not found.</p>
+    <a [routerLink]="listPath" class="btn">Back to {{ schema.labels.plural.toLowerCase() }}</a>
+  </div>
+
+  <div class="container" *ngIf="!loading && item">
+    <a [routerLink]="listPath" class="back-link">← Back to {{ schema.labels.plural.toLowerCase() }}</a>
+
+    <article class="card detail-card">
+      <img class="detail-image" [src]="imageFor(item)" [alt]="item['title']" />
+
+      <div class="card-content details">
+        <div class="listing-header">
+          <div>
+            <h1>{{ item['title'] }}</h1>
+            <p class="detail-subtitle" *ngIf="locationLine(item)">{{ locationLine(item) }}</p>
+          </div>
+          <div class="detail-price" *ngIf="item['price'] !== undefined">
+            <strong>{{ formatValue(priceField, item) }}</strong>
+          </div>
+        </div>
+
+        <section class="detail-description" *ngIf="descriptionField && item['description']">
+          <h2>Description</h2>
+          <p>{{ item['description'] }}</p>
+        </section>
+
+        <section class="detail-fields">
+          <h2>Details</h2>
+          <dl class="detail-grid">
+            <ng-container *ngFor="let field of detailFields">
+              <dt>{{ field.label }}</dt>
+              <dd>{{ formatValue(field, item) || '—' }}</dd>
+            </ng-container>
+          </dl>
+        </section>
+
+        <section class="detail-contact" *ngIf="hasContact(item)">
+          <h2>Contact {{ item.lister_role || 'lister' }}</h2>
+          <dl class="detail-grid contact-grid">
+            <dt>Name</dt>
+            <dd>{{ item.lister_name || '—' }}</dd>
+            <dt>Role</dt>
+            <dd>{{ item.lister_role || '—' }}</dd>
+            <dt>Phone</dt>
+            <dd>
+              <a *ngIf="item.lister_phone" [href]="'tel:' + item.lister_phone">{{ item.lister_phone }}</a>
+              <span *ngIf="!item.lister_phone">—</span>
+            </dd>
+            <dt>Email</dt>
+            <dd>
+              <a *ngIf="item.lister_email" [href]="'mailto:' + item.lister_email">{{ item.lister_email }}</a>
+              <span *ngIf="!item.lister_email">—</span>
+            </dd>
+          </dl>
+        </section>
+      </div>
+    </article>
+  </div>
+</div>

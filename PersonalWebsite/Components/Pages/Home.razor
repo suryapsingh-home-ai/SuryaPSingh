@@ -1,0 +1,136 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@inject ISiteContentService SiteContent
+@inject IBlogService BlogService
+
+<PageTitle>Surya Partap Singh — .NET Senior Software Developer</PageTitle>
+
+@if (profile is null)
+{
+    <div class="container section"><p>Loading...</p></div>
+}
+else
+{
+    <section class="hero">
+        <div class="container hero-inner">
+            <p class="hero-eyebrow">.NET Senior Software Developer</p>
+            <h1>@profile.FullName</h1>
+            <p class="hero-tagline">@profile.Tagline</p>
+            @if (!string.IsNullOrWhiteSpace(profile.Location))
+            {
+                <p class="hero-location">@profile.Location</p>
+            }
+            @if (!string.IsNullOrWhiteSpace(profile.Phone))
+            {
+                <p class="hero-contact">@profile.Email · @profile.Phone</p>
+            }
+            <div class="hero-actions">
+                <a href="#contact" class="btn btn-primary">Get in Touch</a>
+                @if (!string.IsNullOrWhiteSpace(profile.ResumeUrl))
+                {
+                    <a href="@profile.ResumeUrl" class="btn btn-outline" download>Download Resume</a>
+                }
+                <a href="/blog" class="btn btn-outline">Read Blog</a>
+                @if (!string.IsNullOrWhiteSpace(profile.GitHubUrl))
+                {
+                    <a href="@profile.GitHubUrl" target="_blank" rel="noopener" class="btn btn-outline">GitHub</a>
+                }
+            </div>
+        </div>
+    </section>
+
+    @foreach (var siteSection in sections)
+    {
+        <section id="@siteSection.Key" class="section">
+            <div class="container">
+                <h2 class="section-title">@siteSection.Title</h2>
+                <MarkdownContent Content="@siteSection.Content" />
+            </div>
+        </section>
+    }
+
+    <section id="skills" class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">Skills</h2>
+            <div class="skills-grid">
+                @foreach (var group in skills.GroupBy(s => s.Category).OrderBy(g => g.Key))
+                {
+                    <div class="skill-group">
+                        <h3>@group.Key</h3>
+                        <div class="skill-tags">
+                            @foreach (var skill in group.OrderBy(s => s.SortOrder))
+                            {
+                                <span class="skill-tag">@skill.Name</span>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="section">
+        <div class="container">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="projects-grid">
+                @foreach (var project in projects)
+                {
+                    <article class="project-card">
+                        <h3>@project.Title</h3>
+                        <p>@project.Description</p>
+                        <p class="project-tech">@project.TechStack</p>
+                        @if (!string.IsNullOrWhiteSpace(project.RepositoryUrl))
+                        {
+                            <a href="@project.RepositoryUrl" target="_blank" rel="noopener" class="project-link">View repository →</a>
+                        }
+                    </article>
+                }
+            </div>
+        </div>
+    </section>
+
+    @if (recentPosts.Count > 0)
+    {
+        <section id="blog-preview" class="section section-alt">
+            <div class="container">
+                <div class="section-header-row">
+                    <h2 class="section-title">Latest Blog Posts</h2>
+                    <a href="/blog" class="text-link">View all →</a>
+                </div>
+                <div class="blog-grid">
+                    @foreach (var post in recentPosts)
+                    {
+                        <article class="blog-card">
+                            <span class="blog-category">@post.Category.Name</span>
+                            <h3><a href="/blog/@post.Slug">@post.Title</a></h3>
+                            <p>@post.Summary</p>
+                            <time datetime="@post.PublishedAt.ToString("yyyy-MM-dd")">
+                                @post.PublishedAt.ToString("MMMM d, yyyy")
+                            </time>
+                        </article>
+                    }
+                </div>
+            </div>
+        </section>
+    }
+
+    <ContactForm />
+}
+
+@code {
+    private ProfileInfo? profile;
+    private IReadOnlyList<SiteSection> sections = [];
+    private IReadOnlyList<Skill> skills = [];
+    private IReadOnlyList<Project> projects = [];
+    private IReadOnlyList<BlogPost> recentPosts = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        profile = await SiteContent.GetProfileAsync();
+        sections = await SiteContent.GetVisibleSectionsAsync();
+        skills = await SiteContent.GetSkillsAsync();
+        projects = await SiteContent.GetProjectsAsync();
+        var allPosts = await BlogService.GetPublishedPostsAsync();
+        recentPosts = allPosts.Take(3).ToList();
+    }
+}

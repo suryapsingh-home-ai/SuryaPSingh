@@ -1,0 +1,95 @@
+@page "/admin/skills"
+@layout AdminLayout
+@attribute [Authorize(Roles = "Admin")]
+@rendermode InteractiveServer
+@inject ISiteContentService SiteContent
+
+<PageTitle>Skills — Admin</PageTitle>
+
+<div class="admin-toolbar">
+    <h2>Skills</h2>
+    <button type="button" class="btn btn-primary" @onclick="ShowCreate">Add Skill</button>
+</div>
+
+@if (showForm)
+{
+    <div class="admin-panel">
+        <EditForm Model="editing" OnValidSubmit="Save">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Name</label>
+                    <InputText @bind-Value="editing.Name" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <InputText @bind-Value="editing.Category" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Sort Order</label>
+                    <InputNumber @bind-Value="editing.SortOrder" class="form-control" />
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-outline" @onclick="() => showForm = false">Cancel</button>
+            </div>
+        </EditForm>
+    </div>
+}
+
+<table class="admin-table">
+    <thead>
+        <tr><th>Name</th><th>Category</th><th>Order</th><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (var skill in skills)
+        {
+            <tr>
+                <td>@skill.Name</td>
+                <td>@skill.Category</td>
+                <td>@skill.SortOrder</td>
+                <td class="table-actions">
+                    <button type="button" class="btn btn-sm btn-outline" @onclick="() => Edit(skill)">Edit</button>
+                    <button type="button" class="btn btn-sm btn-danger" @onclick="() => Delete(skill.Id)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private IReadOnlyList<Skill> skills = [];
+    private Skill editing = new();
+    private bool showForm;
+
+    protected override async Task OnInitializedAsync() =>
+        skills = await SiteContent.GetSkillsAsync();
+
+    private async Task Reload() =>
+        skills = await SiteContent.GetSkillsAsync();
+
+    private void ShowCreate()
+    {
+        editing = new Skill { SortOrder = skills.Count + 1 };
+        showForm = true;
+    }
+
+    private void Edit(Skill skill)
+    {
+        editing = new Skill { Id = skill.Id, Name = skill.Name, Category = skill.Category, SortOrder = skill.SortOrder };
+        showForm = true;
+    }
+
+    private async Task Save()
+    {
+        await SiteContent.SaveSkillAsync(editing);
+        showForm = false;
+        await Reload();
+    }
+
+    private async Task Delete(int id)
+    {
+        await SiteContent.DeleteSkillAsync(id);
+        await Reload();
+    }
+}

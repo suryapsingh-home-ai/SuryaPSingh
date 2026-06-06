@@ -1,0 +1,136 @@
+<div class="listings-page">
+  <aside class="sidebar" [class.collapsed]="!sidebarOpen">
+    <div class="sidebar-header">
+      <h3>Filters</h3>
+      <button class="toggle-btn" (click)="sidebarOpen = !sidebarOpen">
+        {{ sidebarOpen ? '◀' : '▶' }}
+      </button>
+    </div>
+
+    <div class="sidebar-content" *ngIf="sidebarOpen">
+      <div class="active-filters" *ngIf="hasActiveFilters()">
+        <h4>Active Filters</h4>
+        <div class="filter-tags">
+          <span class="filter-tag" *ngIf="filters['search']">
+            Search: {{ filters['search'] }}
+            <button (click)="clearSearch()">×</button>
+          </span>
+          <ng-container *ngFor="let field of filterFields">
+            <span class="filter-tag" *ngIf="isFilterActive(field)">
+              {{ filterTagLabel(field) }}
+              <button (click)="clearFilter(field)">×</button>
+            </span>
+          </ng-container>
+        </div>
+        <button class="btn btn-secondary" (click)="clearAllFilters()">Clear All</button>
+      </div>
+
+      <div class="filter-section" *ngFor="let field of filterFields">
+        <h4>{{ field.label }}</h4>
+
+        <select
+          *ngIf="field.filter === 'exact' && field.type === 'choice'"
+          [(ngModel)]="filters[field.name]"
+          (change)="onFilterChange()"
+        >
+          <option value="">All</option>
+          <option *ngFor="let choice of field.choices" [value]="choice[0]">{{ choice[1] }}</option>
+        </select>
+
+        <input
+          *ngIf="field.filter === 'exact' && field.type !== 'choice'"
+          [(ngModel)]="filters[field.name]"
+          [placeholder]="'Enter ' + field.label.toLowerCase()"
+          (change)="onFilterChange()"
+        />
+
+        <div class="range-inputs" *ngIf="field.filter === 'range'">
+          <input
+            type="number"
+            [(ngModel)]="filters[field.name + '_min']"
+            placeholder="Min"
+            (change)="onFilterChange()"
+          />
+          <span>-</span>
+          <input
+            type="number"
+            [(ngModel)]="filters[field.name + '_max']"
+            placeholder="Max"
+            (change)="onFilterChange()"
+          />
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="city-selector" *ngIf="cityField">
+      <div class="city-info">
+        <span *ngIf="detectingLocation">Detecting your location...</span>
+        <span *ngIf="!detectingLocation && currentCity"><strong>Location:</strong> {{ currentCity }}</span>
+        <span *ngIf="!detectingLocation && !currentCity"><strong>Location:</strong> All Cities</span>
+      </div>
+      <div class="city-input">
+        <input [(ngModel)]="currentCity" placeholder="Enter city name" (change)="onCityChange(currentCity)" />
+        <button class="btn btn-secondary" (click)="detectLocation()" *ngIf="!detectingLocation">📍 Use My Location</button>
+      </div>
+    </div>
+
+    <div class="search-bar">
+      <input
+        [(ngModel)]="filters['search']"
+        [placeholder]="'Search ' + schema.labels.plural.toLowerCase() + '...'"
+        (keyup.enter)="onSearch()"
+      />
+      <button class="btn" (click)="onSearch()">Search</button>
+    </div>
+
+    <div class="results-header">
+      <p>{{ paginatedData.count }} results found</p>
+      <div class="sorting" *ngIf="sortFields.length">
+        <label>Sort by:</label>
+        <select [(ngModel)]="filters['ordering']" (change)="onFilterChange()">
+          <option value="-created_at">Newest</option>
+          <option value="created_at">Oldest</option>
+          <option *ngFor="let field of sortFields" [value]="field.name">{{ field.label }}: Low to High</option>
+          <option *ngFor="let field of sortFields" [value]="'-' + field.name">{{ field.label }}: High to Low</option>
+        </select>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="loading">Loading {{ schema.labels.plural.toLowerCase() }}...</div>
+
+    <div class="property-grid" *ngIf="!loading">
+      <a
+        class="card card-link"
+        *ngFor="let item of paginatedData.results"
+        [routerLink]="detailRoute(item)"
+      >
+        <img [src]="imageFor(item)" [alt]="item['title']" />
+        <div class="card-content">
+          <div class="listing-header">
+            <div>
+              <h2>{{ item['title'] }}</h2>
+              <div *ngIf="item['city'] || item['state']">{{ item['city'] }}<span *ngIf="item['city'] && item['state']">, </span>{{ item['state'] }}</div>
+            </div>
+            <div *ngIf="item['price'] !== undefined">
+              <strong>{{ formatValue({ name: 'price', type: 'money', label: 'Price' }, item) }}</strong>
+            </div>
+          </div>
+          <p *ngFor="let field of cardFields">{{ field.label }}: {{ formatValue(field, item) }}</p>
+          <span class="btn">View details</span>
+        </div>
+      </a>
+    </div>
+
+    <div *ngIf="!loading && paginatedData.results.length === 0" class="no-results">
+      No results found. Try adjusting your filters.
+    </div>
+
+    <div class="pagination" *ngIf="!loading && paginatedData.count > 0">
+      <button class="btn btn-secondary" [disabled]="!paginatedData.previous" (click)="previousPage()">Previous</button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button class="btn btn-secondary" [disabled]="!paginatedData.next" (click)="nextPage()">Next</button>
+    </div>
+  </main>
+</div>

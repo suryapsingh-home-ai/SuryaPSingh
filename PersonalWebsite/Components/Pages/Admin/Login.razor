@@ -1,0 +1,69 @@
+@page "/admin/login"
+@rendermode InteractiveServer
+@inject AdminAuthService AuthService
+@inject NavigationManager Navigation
+@inject IHttpContextAccessor HttpContextAccessor
+
+<PageTitle>Admin Login</PageTitle>
+
+<section class="section login-page">
+    <div class="container container-narrow">
+        <div class="login-card">
+            <h1>Admin Sign In</h1>
+            <p class="section-lead">Sign in to manage site content.</p>
+
+            @if (!string.IsNullOrEmpty(error))
+            {
+                <div class="alert alert-error">@error</div>
+            }
+
+            <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
+                <div class="form-group">
+                    <label>Username</label>
+                    <InputText @bind-Value="loginModel.Username" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <InputText type="password" @bind-Value="loginModel.Password" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-primary" disabled="@isLoading">
+                    @(isLoading ? "Signing in..." : "Sign In")
+                </button>
+            </EditForm>
+            <p class="login-hint"><a href="/">← Back to site</a></p>
+        </div>
+    </div>
+</section>
+
+@code {
+    private LoginModel loginModel = new();
+    private string? error;
+    private bool isLoading;
+
+    private async Task HandleLogin()
+    {
+        isLoading = true;
+        error = null;
+        var httpContext = HttpContextAccessor.HttpContext;
+        if (httpContext is null)
+        {
+            error = "Unable to authenticate.";
+            isLoading = false;
+            return;
+        }
+
+        var success = await AuthService.SignInAsync(httpContext, loginModel.Username, loginModel.Password);
+        if (success)
+            Navigation.NavigateTo("/admin", forceLoad: true);
+        else
+            error = "Invalid username or password.";
+
+        isLoading = false;
+    }
+
+    private class LoginModel
+    {
+        public string Username { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+    }
+}

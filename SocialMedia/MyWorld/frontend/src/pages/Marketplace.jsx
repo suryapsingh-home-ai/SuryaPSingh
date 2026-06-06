@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useState } from 'react'
+import { useQuery, useMutation, useLazyQuery } from '@apollo/client'
+import {
+  GET_MARKETPLACE_LISTINGS,
+  GET_MY_LISTINGS,
+  GET_LISTING,
+  GET_SENT_OFFERS,
+  CREATE_LISTING,
+  DELETE_LISTING,
+  SEND_OFFER,
+} from '../graphql/operations'
 import './Marketplace.css'
 
 const Marketplace = () => {
-  const [listings, setListings] = useState([])
-  const [userListings, setUserListings] = useState([])
   const [selectedListing, setSelectedListing] = useState(null)
-  const [offers, setOffers] = useState([])
   const [newTitle, setNewTitle] = useState('')
   const [newDescription, setNewDescription] = useState('')
   const [newPrice, setNewPrice] = useState('')
@@ -14,138 +20,90 @@ const Marketplace = () => {
   const [offerPrice, setOfferPrice] = useState('')
   const [offerMessage, setOfferMessage] = useState('')
   const [activeTab, setActiveTab] = useState('browse')
-  const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    if (activeTab === 'browse') {
-      fetchListings()
-    } else if (activeTab === 'mylistings') {
-      fetchUserListings()
-    } else if (activeTab === 'myoffers') {
-      fetchMyOffers()
-    }
-  }, [activeTab])
+  const { data: listingsData, loading: listingsLoading } = useQuery(
+    GET_MARKETPLACE_LISTINGS,
+    { skip: activeTab !== 'browse' }
+  )
 
-  const fetchListings = async () => {
-    setLoading(true)
-    try {
-      const response = await axios.get('/marketplace/listings', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      })
-      setListings(response.data)
-    } catch (error) {
-      console.error('Fetch listings error:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const { data: myListingsData, loading: myListingsLoading, refetch: refetchMyListings } =
+    useQuery(GET_MY_LISTINGS, { skip: activeTab !== 'mylistings' })
 
-  const fetchUserListings = async () => {
-    setLoading(true)
-    try {
-      const response = await axios.get('/marketplace/listings/user', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      })
-      setUserListings(response.data)
-    } catch (error) {
-      console.error('Fetch user listings error:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const { data: offersData, loading: offersLoading, refetch: refetchOffers } =
+    useQuery(GET_SENT_OFFERS, { skip: activeTab !== 'myoffers' })
 
-  const fetchMyOffers = async () => {
-    setLoading(true)
-    try {
-      const response = await axios.get('/marketplace/offers/sent', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      })
-      setOffers(response.data)
-    } catch (error) {
-      console.error('Fetch offers error:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const [fetchListing] = useLazyQuery(GET_LISTING, {
+    onCompleted: (data) => setSelectedListing(data.listing),
+  })
 
-  const createListing = async () => {
+  const [createListing] = useMutation(CREATE_LISTING)
+  const [deleteListing] = useMutation(DELETE_LISTING)
+  const [sendOffer] = useMutation(SEND_OFFER)
+
+  const listings = listingsData?.marketplaceListings || []
+  const userListings = myListingsData?.myListings || []
+  const offers = offersData?.sentOffers || []
+
+  const handleCreateListing = async () => {
     if (!newTitle || !newPrice) {
       alert('Title and price are required')
       return
     }
 
     try {
-      await axios.post(
-        '/marketplace/listings',
-        {
+      await createListing({
+        variables: {
           title: newTitle,
-          description: newDescription,
-          price: newPrice,
-          category: newCategory
+          description: newDescription || null,
+          price: parseFloat(newPrice),
+          category: newCategory || null,
         },
-        { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
-      )
+      })
       alert('Listing created successfully!')
       setNewTitle('')
       setNewDescription('')
       setNewPrice('')
       setNewCategory('')
-      fetchUserListings()
+      setActiveTab('mylistings')
+      refetchMyListings()
     } catch (error) {
-      console.error('Create listing error:', error)
-      alert(error.response?.data?.error || 'Failed to create listing')
+      alert(error.message || 'Failed to create listing')
     }
   }
 
-  const selectListing = async (listingId) => {
-    try {
-      const response = await axios.get(`/marketplace/listings/${listingId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      })
-      setSelectedListing(response.data)
-    } catch (error) {
-      console.error('Fetch listing details error:', error)
+  const handleDeleteListing = async (listingId) => {
+    if (window.confirm('Are you sure you want to delete this listing?')) {
+      try {
+        await deleteListing({ variables: { listingId: String(listingId) } })
+        alert('Listing deleted successfully!')
+        refetchMyListings()
+      } catch (error) {
+        alert(error.message || 'Failed to delete listing')
+      }
     }
   }
 
-  const sendOffer = async () => {
+  const handleSendOffer = async () => {
     if (!offerPrice) {
       alert('Offer price is required')
       return
     }
 
     try {
-      await axios.post(
-        '/marketplace/offers',
-        {
-          listingId: selectedListing.id,
-          offerPrice,
-          message: offerMessage
+      await sendOffer({
+        variables: {
+          listingId: String(selectedListing.id),
+          offerPrice: parseFloat(offerPrice),
+          message: offerMessage || null,
         },
-        { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
-      )
+      })
       alert('Offer sent successfully!')
       setOfferPrice('')
       setOfferMessage('')
-      fetchMyOffers()
+      setSelectedListing(null)
+      refetchOffers()
     } catch (error) {
-      console.error('Send offer error:', error)
-      alert(error.response?.data?.error || 'Failed to send offer')
-    }
-  }
-
-  const deleteListing = async (listingId) => {
-    if (window.confirm('Are you sure you want to delete this listing?')) {
-      try {
-        await axios.delete(`/marketplace/listings/${listingId}`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-        })
-        alert('Listing deleted successfully!')
-        fetchUserListings()
-      } catch (error) {
-        console.error('Delete listing error:', error)
-        alert(error.response?.data?.error || 'Failed to delete listing')
-      }
+      alert(error.message || 'Failed to send offer')
     }
   }
 
@@ -223,13 +181,13 @@ const Marketplace = () => {
             </div>
           </div>
 
-          <button onClick={createListing}>Create Listing</button>
+          <button onClick={handleCreateListing}>Create Listing</button>
         </div>
       )}
 
       {activeTab === 'browse' && (
         <div className="browse-listings-section">
-          {loading ? (
+          {listingsLoading ? (
             <p>Loading...</p>
           ) : listings.length === 0 ? (
             <p>No listings available</p>
@@ -242,7 +200,9 @@ const Marketplace = () => {
                   <p className="category">{listing.category}</p>
                   <p className="price">${listing.price}</p>
                   <p className="seller">Seller: {listing.username}</p>
-                  <button onClick={() => selectListing(listing.id)}>View Details</button>
+                  <button onClick={() => fetchListing({ variables: { id: String(listing.id) } })}>
+                    View Details
+                  </button>
                 </div>
               ))}
             </div>
@@ -251,10 +211,7 @@ const Marketplace = () => {
           {selectedListing && (
             <div className="listing-detail-modal">
               <div className="modal-content">
-                <button
-                  className="close-btn"
-                  onClick={() => setSelectedListing(null)}
-                >
+                <button className="close-btn" onClick={() => setSelectedListing(null)}>
                   ×
                 </button>
                 <h2>{selectedListing.title}</h2>
@@ -283,7 +240,7 @@ const Marketplace = () => {
                     />
                   </div>
 
-                  <button onClick={sendOffer}>Send Offer</button>
+                  <button onClick={handleSendOffer}>Send Offer</button>
                 </div>
               </div>
             </div>
@@ -293,7 +250,7 @@ const Marketplace = () => {
 
       {activeTab === 'mylistings' && (
         <div className="my-listings-section">
-          {loading ? (
+          {myListingsLoading ? (
             <p>Loading...</p>
           ) : userListings.length === 0 ? (
             <p>No listings yet</p>
@@ -306,7 +263,7 @@ const Marketplace = () => {
                   <p className="category">{listing.category}</p>
                   <p className="price">${listing.price}</p>
                   <p className="status">{listing.status}</p>
-                  <button onClick={() => deleteListing(listing.id)}>Delete</button>
+                  <button onClick={() => handleDeleteListing(listing.id)}>Delete</button>
                 </div>
               ))}
             </div>
@@ -316,7 +273,7 @@ const Marketplace = () => {
 
       {activeTab === 'myoffers' && (
         <div className="my-offers-section">
-          {loading ? (
+          {offersLoading ? (
             <p>Loading...</p>
           ) : offers.length === 0 ? (
             <p>No offers yet</p>
@@ -324,7 +281,7 @@ const Marketplace = () => {
             offers.map((offer) => (
               <div key={offer.id} className="offer-card">
                 <h3>{offer.title}</h3>
-                <p>Your Offer: ${offer.offer_price}</p>
+                <p>Your Offer: ${offer.offerPrice}</p>
                 <p>Listed Price: ${offer.price}</p>
                 <p>Status: {offer.status}</p>
                 <p>Message: {offer.message}</p>

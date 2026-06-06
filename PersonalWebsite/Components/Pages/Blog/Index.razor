@@ -1,0 +1,72 @@
+@page "/blog"
+@rendermode InteractiveServer
+@inject IBlogService BlogService
+
+<PageTitle>Blog — Surya P. Singh</PageTitle>
+
+<section class="section page-header">
+    <div class="container">
+        <h1>Technical Blog</h1>
+        <p class="section-lead">Notes on .NET, architecture, DevOps, and AI from my engineering work.</p>
+
+        <div class="category-filter">
+            <button type="button" class="filter-btn @(selectedCategory is null ? "active" : "")"
+                    @onclick="() => SelectCategory(null)">All</button>
+            @foreach (var category in categories)
+            {
+                <button type="button" class="filter-btn @(selectedCategory == category.Slug ? "active" : "")"
+                        @onclick="() => SelectCategory(category.Slug)">@category.Name</button>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        @if (posts.Count == 0)
+        {
+            <p class="empty-state">No blog posts in this category yet.</p>
+        }
+        else
+        {
+            <div class="blog-list">
+                @foreach (var post in posts)
+                {
+                    <article class="blog-list-item">
+                        <div>
+                            <span class="blog-category">@post.Category.Name</span>
+                            <h2><a href="/blog/@post.Slug">@post.Title</a></h2>
+                            <p>@post.Summary</p>
+                            <time datetime="@post.PublishedAt.ToString("yyyy-MM-dd")">
+                                @post.PublishedAt.ToString("MMMM d, yyyy")
+                            </time>
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+    </div>
+</section>
+
+@code {
+    private IReadOnlyList<BlogCategory> categories = [];
+    private IReadOnlyList<BlogPost> posts = [];
+    private string? selectedCategory;
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await BlogService.GetCategoriesAsync();
+        await LoadPosts();
+    }
+
+    private async Task SelectCategory(string? slug)
+    {
+        selectedCategory = slug;
+        await LoadPosts();
+    }
+
+    private async Task LoadPosts()
+    {
+        posts = await BlogService.GetPublishedPostsAsync(selectedCategory);
+    }
+}

@@ -1,0 +1,53 @@
+@page "/admin"
+@layout AdminLayout
+@attribute [Authorize(Roles = "Admin")]
+@rendermode InteractiveServer
+@inject ISiteContentService SiteContent
+@inject IBlogService BlogService
+@inject IContactService ContactService
+
+<PageTitle>Admin Dashboard</PageTitle>
+
+<div class="dashboard-grid">
+    <div class="stat-card">
+        <span class="stat-label">Sections</span>
+        <span class="stat-value">@sectionCount</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-label">Blog Posts</span>
+        <span class="stat-value">@postCount</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-label">Projects</span>
+        <span class="stat-value">@projectCount</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-label">Unread Messages</span>
+        <span class="stat-value">@unreadMessages</span>
+    </div>
+</div>
+
+<div class="admin-panel">
+    <h2>Quick Actions</h2>
+    <div class="action-links">
+        <a href="/admin/sections" class="btn btn-outline">Manage Sections</a>
+        <a href="/admin/blog" class="btn btn-outline">Manage Blog</a>
+        <a href="/admin/messages" class="btn btn-outline">View Messages</a>
+        <a href="/admin/profile" class="btn btn-outline">Edit Profile</a>
+    </div>
+</div>
+
+@code {
+    private int sectionCount;
+    private int postCount;
+    private int projectCount;
+    private int unreadMessages;
+
+    protected override async Task OnInitializedAsync()
+    {
+        sectionCount = (await SiteContent.GetAllSectionsAsync()).Count;
+        postCount = (await BlogService.GetAllPostsAsync()).Count;
+        projectCount = (await SiteContent.GetProjectsAsync(visibleOnly: false)).Count;
+        unreadMessages = (await ContactService.GetMessagesAsync()).Count(m => !m.IsRead);
+    }
+}

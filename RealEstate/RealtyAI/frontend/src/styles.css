@@ -122,6 +122,108 @@ select {
   gap: 1rem;
 }
 
+/* Clickable listing cards */
+a.card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+a.card-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+a.card-link .btn {
+  margin-top: 0.5rem;
+}
+
+/* Detail page */
+.detail-page {
+  padding-bottom: 2rem;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: #0d47a1;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.detail-card .detail-image {
+  height: 420px;
+}
+
+.detail-card h1 {
+  margin: 0 0 0.25rem;
+  font-size: 2rem;
+}
+
+.detail-subtitle {
+  margin: 0;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.detail-price strong {
+  font-size: 1.5rem;
+  color: #0d47a1;
+}
+
+.detail-description h2,
+.detail-fields h2 {
+  margin: 1.5rem 0 0.75rem;
+  font-size: 1.25rem;
+}
+
+.detail-description p {
+  line-height: 1.7;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: minmax(120px, 180px) 1fr;
+  gap: 0.75rem 1.5rem;
+  margin: 0;
+}
+
+.detail-grid dt {
+  font-weight: 600;
+  color: #555;
+}
+
+.detail-grid dd {
+  margin: 0;
+}
+
+.detail-contact {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+.detail-contact h2 {
+  margin-top: 0;
+}
+
+.contact-grid a {
+  color: #0d47a1;
+  text-decoration: none;
+}
+
+.contact-grid a:hover {
+  text-decoration: underline;
+}
+
 /* Listings Page Layout */
 .listings-page {
   display: flex;
@@ -373,6 +475,157 @@ select {
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Admin module */
+.admin-page {
+  padding-bottom: 2rem;
+}
+
+.admin-card {
+  max-width: 480px;
+  margin: 2rem auto;
+}
+
+.admin-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.admin-toolbar-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.admin-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-form label {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 600;
+}
+
+.admin-form .required {
+  color: #c62828;
+}
+
+.admin-form-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.admin-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-danger {
+  background: #c62828;
+}
+
+.btn-danger:hover {
+  background: #b71c1c;
+}
+
+.error {
+  color: #c62828;
+  margin: 0;
+}
+
+.success {
+  color: #2e7d32;
+  margin: 0;
+}
+
+.hint {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status-pending {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.status-approved {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-rejected {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.rejection-reason {
+  display: block;
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.25rem;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-tabs .tab {
+  border: 1px solid #ccc;
+  background: white;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.filter-tabs .tab.active {
+  background: #0d47a1;
+  color: white;
+  border-color: #0d47a1;
+}
+
+.btn-success {
+  background: #2e7d32;
+}
+
+.btn-success:hover {
+  background: #1b5e20;
 }
 
 /* Responsive */

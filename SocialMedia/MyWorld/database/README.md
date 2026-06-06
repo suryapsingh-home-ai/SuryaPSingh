@@ -1,56 +1,44 @@
-# MyWorld Database Setup
+# Database Setup
 
-## Overview
-PostgreSQL database schema for the MyWorld social media application.
+## Fresh Install
+
+```bash
+createdb myworld
+psql -U postgres -d myworld -f database/schema.sql
+psql -U postgres -d myworld -f database/seed.sql
+```
+
+## Seed Data
+
+All seed users use password: **`password123`**
+
+| ID | Username | Email |
+|----|----------|-------|
+| 1 | john_doe | john@example.com |
+| 2 | jane_smith | jane@example.com |
+| 3 | bob_wilson | bob@example.com |
+
+Sample posts, comments, likes, and friendships are included.
 
 ## Tables
 
-### users
-- Stores user account information
-- Fields: id, username, email, password, bio, created_at, updated_at
+- **users** — accounts and bios
+- **posts**, **comments**, **likes** — feed
+- **friendships** — connections (with `requested_by` for pending requests)
+- **groups**, **group_members**, **group_posts**, **group_post_comments**, **group_post_likes**
+- **marketplace_listings**, **marketplace_offers**
 
-### posts
-- Stores user posts
-- Fields: id, user_id, content, created_at, updated_at
+## Migrations
 
-### comments
-- Stores comments on posts
-- Fields: id, post_id, user_id, content, created_at, updated_at
+| File | Purpose |
+|------|---------|
+| `migrations/001_add_requested_by.sql` | Add `requested_by` to friendships (upgrade path) |
 
-### likes
-- Stores post likes
-- Fields: id, post_id, user_id, created_at
+## Reset Database
 
-### friendships
-- Stores friend connections between users
-- Fields: id, user_id_1, user_id_2, status (pending/accepted), created_at, updated_at
-
-## Setup Instructions
-
-1. Create a PostgreSQL database:
-   ```
-   createdb myworld
-   ```
-
-2. Run the schema file:
-   ```
-   psql -U postgres -d myworld -f schema.sql
-   ```
-
-3. (Optional) Load sample data:
-   ```
-   psql -U postgres -d myworld -f seed.sql
-   ```
-
-4. Update backend `.env` file with your database credentials
-
-## Configuration
-
-Update your `.env` file in the backend folder:
-```
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=your_password
-DB_NAME=myworld
+```bash
+dropdb myworld
+createdb myworld
+psql -U postgres -d myworld -f database/schema.sql
+psql -U postgres -d myworld -f database/seed.sql
 ```

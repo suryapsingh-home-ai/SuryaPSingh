@@ -1,34 +1,31 @@
 import { useState } from 'react'
-import axios from 'axios'
+import { useMutation } from '@apollo/client'
 import { useNavigate, Link } from 'react-router-dom'
+import { LOGIN } from '../graphql/operations'
 import './Auth.css'
 
 function Login({ setIsLoggedIn, setUser }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+
+  const [login, { loading }] = useMutation(LOGIN, {
+    onCompleted: (data) => {
+      localStorage.setItem('token', data.login.token)
+      setIsLoggedIn(true)
+      setUser(data.login.user)
+      navigate('/')
+    },
+    onError: (err) => {
+      setError(err.message || 'Login failed')
+    },
+  })
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
-    setLoading(true)
-
-    try {
-      const response = await axios.post('http://localhost:5000/auth/login', { 
-        email, 
-        password 
-      })
-      localStorage.setItem('token', response.data.token)
-      setIsLoggedIn(true)
-      setUser(response.data.user)
-      navigate('/')
-    } catch (err) {
-      setError(err.response?.data?.message || 'Login failed')
-    } finally {
-      setLoading(false)
-    }
+    await login({ variables: { email, password } })
   }
 
   return (
@@ -56,7 +53,10 @@ function Login({ setIsLoggedIn, setUser }) {
           </button>
         </form>
         <p style={{ textAlign: 'center', marginTop: '15px', fontSize: '14px' }}>
-          Don't have an account? <Link to="/register" style={{ color: '#0066cc', textDecoration: 'none' }}>Sign up here</Link>
+          Don't have an account?{' '}
+          <Link to="/register" style={{ color: '#0066cc', textDecoration: 'none' }}>
+            Sign up here
+          </Link>
         </p>
       </div>
     </div>

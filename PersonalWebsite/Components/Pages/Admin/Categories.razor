@@ -1,0 +1,93 @@
+@page "/admin/categories"
+@layout AdminLayout
+@attribute [Authorize(Roles = "Admin")]
+@rendermode InteractiveServer
+@inject IBlogService BlogService
+
+<PageTitle>Blog Categories — Admin</PageTitle>
+
+<div class="admin-toolbar">
+    <h2>Blog Categories</h2>
+    <button type="button" class="btn btn-primary" @onclick="ShowCreate">Add Category</button>
+</div>
+
+@if (showForm)
+{
+    <div class="admin-panel">
+        <EditForm Model="editing" OnValidSubmit="Save">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Name</label>
+                    <InputText @bind-Value="editing.Name" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Slug</label>
+                    <InputText @bind-Value="editing.Slug" class="form-control" />
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-outline" @onclick="() => showForm = false">Cancel</button>
+            </div>
+        </EditForm>
+    </div>
+}
+
+<table class="admin-table">
+    <thead>
+        <tr><th>Name</th><th>Slug</th><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (var category in categories)
+        {
+            <tr>
+                <td>@category.Name</td>
+                <td>@category.Slug</td>
+                <td class="table-actions">
+                    <button type="button" class="btn btn-sm btn-outline" @onclick="() => Edit(category)">Edit</button>
+                    <button type="button" class="btn btn-sm btn-danger" @onclick="() => Delete(category.Id)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private IReadOnlyList<BlogCategory> categories = [];
+    private BlogCategory editing = new();
+    private bool showForm;
+
+    protected override async Task OnInitializedAsync() =>
+        await Reload();
+
+    private async Task Reload() =>
+        categories = await BlogService.GetCategoriesAsync();
+
+    private void ShowCreate()
+    {
+        editing = new BlogCategory();
+        showForm = true;
+    }
+
+    private void Edit(BlogCategory category)
+    {
+        editing = new BlogCategory { Id = category.Id, Name = category.Name, Slug = category.Slug };
+        showForm = true;
+    }
+
+    private async Task Save()
+    {
+        if (string.IsNullOrWhiteSpace(editing.Slug))
+            editing.Slug = editing.Name.ToLowerInvariant().Replace(' ', '-');
+
+        await BlogService.SaveCategoryAsync(editing);
+        showForm = false;
+        await Reload();
+    }
+
+    private async Task Delete(int id)
+    {
+        await BlogService.DeleteCategoryAsync(id);
+        await Reload();
+    }
+}

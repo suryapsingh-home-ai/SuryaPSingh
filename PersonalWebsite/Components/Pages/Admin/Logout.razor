@@ -1,0 +1,15 @@
+@page "/admin/logout"
+@inject AdminAuthService AuthService
+@inject NavigationManager Navigation
+@inject IHttpContextAccessor HttpContextAccessor
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var httpContext = HttpContextAccessor.HttpContext;
+        if (httpContext is not null)
+            await AuthService.SignOutAsync(httpContext);
+
+        Navigation.NavigateTo("/admin/login", forceLoad: true);
+    }
+}

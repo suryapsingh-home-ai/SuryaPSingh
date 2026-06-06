@@ -119,3 +119,14 @@
 .connections-section {
   margin-top: 20px;
 }
+
+.user-card h3 a,
+.connection-card h3 a {
+  color: #1877f2;
+  text-decoration: none;
+}
+
+.user-card h3 a:hover,
+.connection-card h3 a:hover {
+  text-decoration: underline;
+}

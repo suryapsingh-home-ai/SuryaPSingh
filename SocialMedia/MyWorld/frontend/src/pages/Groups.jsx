@@ -1,93 +1,68 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useState } from 'react'
+import { useQuery, useMutation, useLazyQuery } from '@apollo/client'
+import {
+  GET_GROUPS,
+  GET_GROUP_POSTS,
+  CREATE_GROUP,
+  JOIN_GROUP,
+  CREATE_GROUP_POST,
+  TOGGLE_GROUP_POST_LIKE,
+} from '../graphql/operations'
 import './Groups.css'
 
 const Groups = () => {
-  const [groups, setGroups] = useState([])
-  const [userGroups, setUserGroups] = useState([])
   const [selectedGroup, setSelectedGroup] = useState(null)
-  const [groupPosts, setGroupPosts] = useState([])
   const [newGroupName, setNewGroupName] = useState('')
   const [newGroupDesc, setNewGroupDesc] = useState('')
   const [newPostContent, setNewPostContent] = useState('')
   const [activeTab, setActiveTab] = useState('browse')
-  const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    if (activeTab === 'browse') {
-      fetchAllGroups()
-    } else if (activeTab === 'mygroups') {
-      fetchAllGroups()
-    }
-  }, [activeTab])
+  const { data: groupsData, loading: groupsLoading, refetch: refetchGroups } =
+    useQuery(GET_GROUPS, { skip: activeTab !== 'browse' })
 
-  const fetchAllGroups = async () => {
-    setLoading(true)
-    try {
-      const response = await axios.get('/groups', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      })
-      setGroups(response.data)
-    } catch (error) {
-      console.error('Fetch groups error:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const [fetchGroupPosts, { data: postsData, loading: postsLoading }] =
+    useLazyQuery(GET_GROUP_POSTS)
 
-  const createGroup = async () => {
+  const [createGroup] = useMutation(CREATE_GROUP)
+  const [joinGroup] = useMutation(JOIN_GROUP)
+  const [createGroupPost] = useMutation(CREATE_GROUP_POST)
+  const [toggleLike] = useMutation(TOGGLE_GROUP_POST_LIKE)
+
+  const groups = groupsData?.groups || []
+  const groupPosts = postsData?.groupPosts || []
+
+  const handleCreateGroup = async () => {
     if (!newGroupName) {
       alert('Group name is required')
       return
     }
 
     try {
-      const response = await axios.post(
-        '/groups',
-        { name: newGroupName, description: newGroupDesc },
-        { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
-      )
+      await createGroup({
+        variables: { name: newGroupName, description: newGroupDesc || null },
+      })
       alert('Group created successfully!')
       setNewGroupName('')
       setNewGroupDesc('')
-      fetchAllGroups()
+      setActiveTab('browse')
+      refetchGroups()
     } catch (error) {
-      console.error('Create group error:', error)
-      alert(error.response?.data?.error || 'Failed to create group')
+      alert(error.message || 'Failed to create group')
     }
   }
 
-  const selectGroup = async (groupId) => {
+  const selectGroup = (groupId) => {
     setSelectedGroup(groupId)
-    fetchGroupPosts(groupId)
+    fetchGroupPosts({ variables: { groupId: String(groupId) } })
   }
 
-  const fetchGroupPosts = async (groupId) => {
-    setLoading(true)
+  const handleJoinGroup = async (groupId) => {
     try {
-      const response = await axios.get(`/groups/${groupId}/posts`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      })
-      setGroupPosts(response.data)
-    } catch (error) {
-      console.error('Fetch group posts error:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const joinGroup = async (groupId) => {
-    try {
-      await axios.post(
-        '/groups/join',
-        { groupId },
-        { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
-      )
+      await joinGroup({ variables: { groupId: String(groupId) } })
       alert('Joined group successfully!')
-      fetchAllGroups()
+      refetchGroups()
     } catch (error) {
-      console.error('Join group error:', error)
-      alert(error.response?.data?.error || 'Failed to join group')
+      alert(error.message || 'Failed to join group')
     }
   }
 
@@ -98,27 +73,23 @@ const Groups = () => {
     }
 
     try {
-      await axios.post(
-        '/groups/posts',
-        { groupId: selectedGroup, content: newPostContent },
-        { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
-      )
+      await createGroupPost({
+        variables: {
+          groupId: String(selectedGroup),
+          content: newPostContent,
+        },
+      })
       setNewPostContent('')
-      fetchGroupPosts(selectedGroup)
+      fetchGroupPosts({ variables: { groupId: String(selectedGroup) } })
     } catch (error) {
-      console.error('Post to group error:', error)
-      alert(error.response?.data?.error || 'Failed to post')
+      alert(error.message || 'Failed to post')
     }
   }
 
   const likePost = async (postId) => {
     try {
-      await axios.post(
-        '/groups/posts/like',
-        { postId },
-        { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
-      )
-      fetchGroupPosts(selectedGroup)
+      await toggleLike({ variables: { postId: String(postId) } })
+      fetchGroupPosts({ variables: { groupId: String(selectedGroup) } })
     } catch (error) {
       console.error('Like post error:', error)
     }
@@ -164,14 +135,14 @@ const Groups = () => {
             />
           </div>
 
-          <button onClick={createGroup}>Create Group</button>
+          <button onClick={handleCreateGroup}>Create Group</button>
         </div>
       )}
 
       {activeTab === 'browse' && (
         <div className="browse-groups-section">
           <div className="groups-list">
-            {loading ? (
+            {groupsLoading ? (
               <p>Loading...</p>
             ) : (
               groups.map((group) => (
@@ -181,11 +152,11 @@ const Groups = () => {
                 >
                   <h3>{group.name}</h3>
                   <p>{group.description}</p>
-                  <p className="admin">Admin: {group.admin_name}</p>
-                  <p className="members">Members: {group.member_count}</p>
+                  <p className="admin">Admin: {group.adminName}</p>
+                  <p className="members">Members: {group.memberCount}</p>
                   <div className="group-actions">
                     <button onClick={() => selectGroup(group.id)}>View</button>
-                    <button onClick={() => joinGroup(group.id)}>Join</button>
+                    <button onClick={() => handleJoinGroup(group.id)}>Join</button>
                   </div>
                 </div>
               ))
@@ -205,7 +176,7 @@ const Groups = () => {
 
               <div className="group-posts">
                 <h3>Posts</h3>
-                {loading ? (
+                {postsLoading ? (
                   <p>Loading posts...</p>
                 ) : groupPosts.length === 0 ? (
                   <p>No posts yet</p>
@@ -215,8 +186,8 @@ const Groups = () => {
                       <h4>{post.username}</h4>
                       <p>{post.content}</p>
                       <div className="post-meta">
-                        <span>{post.likes_count} likes</span>
-                        <span>{post.comments_count} comments</span>
+                        <span>{post.likesCount} likes</span>
+                        <span>{post.commentsCount} comments</span>
                       </div>
                       <button onClick={() => likePost(post.id)}>Like</button>
                     </div>

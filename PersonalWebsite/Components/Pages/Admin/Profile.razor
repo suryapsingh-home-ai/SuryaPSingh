@@ -1,0 +1,74 @@
+@page "/admin/profile"
+@layout AdminLayout
+@attribute [Authorize(Roles = "Admin")]
+@rendermode InteractiveServer
+@inject ISiteContentService SiteContent
+
+<PageTitle>Edit Profile — Admin</PageTitle>
+
+<h2>Profile</h2>
+
+@if (profile is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    @if (saved)
+    {
+        <div class="alert alert-success">Profile updated.</div>
+    }
+
+    <EditForm Model="profile" OnValidSubmit="Save" class="admin-form">
+        <div class="form-group">
+            <label>Full Name</label>
+            <InputText @bind-Value="profile.FullName" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Tagline</label>
+            <InputText @bind-Value="profile.Tagline" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <InputText @bind-Value="profile.Email" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Phone</label>
+            <InputText @bind-Value="profile.Phone" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Location</label>
+            <InputText @bind-Value="profile.Location" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>GitHub URL</label>
+            <InputText @bind-Value="profile.GitHubUrl" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>LinkedIn URL</label>
+            <InputText @bind-Value="profile.LinkedInUrl" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Resume URL</label>
+            <InputText @bind-Value="profile.ResumeUrl" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Save Profile</button>
+    </EditForm>
+}
+
+@code {
+    private ProfileInfo? profile;
+    private bool saved;
+
+    protected override async Task OnInitializedAsync()
+    {
+        profile = await SiteContent.GetProfileAsync() ?? new ProfileInfo();
+    }
+
+    private async Task Save()
+    {
+        if (profile is null) return;
+        await SiteContent.UpdateProfileAsync(profile);
+        saved = true;
+    }
+}

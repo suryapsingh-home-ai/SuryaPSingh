@@ -1,0 +1,61 @@
+@page "/admin/messages"
+@layout AdminLayout
+@attribute [Authorize(Roles = "Admin")]
+@rendermode InteractiveServer
+@inject IContactService ContactService
+
+<PageTitle>Messages — Admin</PageTitle>
+
+<h2>Contact Messages</h2>
+
+@if (messages.Count == 0)
+{
+    <p class="empty-state">No messages yet.</p>
+}
+else
+{
+    <div class="message-list">
+        @foreach (var message in messages)
+        {
+            <article class="message-card @(message.IsRead ? "" : "message-unread")">
+                <div class="message-header">
+                    <div>
+                        <strong>@message.Name</strong>
+                        <span class="message-meta">@message.Email · @message.Phone</span>
+                    </div>
+                    <time>@message.CreatedAt.ToLocalTime().ToString("MMM d, yyyy h:mm tt")</time>
+                </div>
+                <p class="message-body">@message.Message</p>
+                <div class="message-actions">
+                    @if (!message.IsRead)
+                    {
+                        <button type="button" class="btn btn-sm btn-outline" @onclick="() => MarkRead(message.Id)">Mark read</button>
+                    }
+                    <button type="button" class="btn btn-sm btn-danger" @onclick="() => Delete(message.Id)">Delete</button>
+                </div>
+            </article>
+        }
+    </div>
+}
+
+@code {
+    private IReadOnlyList<ContactMessage> messages = [];
+
+    protected override async Task OnInitializedAsync() =>
+        await Reload();
+
+    private async Task Reload() =>
+        messages = await ContactService.GetMessagesAsync();
+
+    private async Task MarkRead(int id)
+    {
+        await ContactService.MarkAsReadAsync(id);
+        await Reload();
+    }
+
+    private async Task Delete(int id)
+    {
+        await ContactService.DeleteMessageAsync(id);
+        await Reload();
+    }
+}
