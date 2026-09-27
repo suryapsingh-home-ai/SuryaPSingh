@@ -38,6 +38,8 @@ jobs:
         run: npm ci
 
       - name: Build
+        env:
+          BASE_PATH: /SuryaPSingh/
         run: npm run build
 
       - name: Upload Pages artifact
