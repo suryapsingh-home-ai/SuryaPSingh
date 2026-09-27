@@ -1,8 +1,10 @@
 {
   "hero": {
     "name": "Surya Partap Singh",
-    "title": "Senior AI-Augmented .NET Developer",
-    "tagline": "11+ years building enterprise systems in C#, Azure, and AI-assisted delivery — from microservices to MCP-powered developer tooling.",
+    "title": "Senior AI-Augmented .NET Developer / Solution Architect",
+    "tagline": "15+ years building enterprise systems across C#, Azure, AWS, and AI-assisted delivery — embedded with client teams as a forward-deployed engineer.",
+    "photo": "images/surya-headshot.jpg",
+    "photoAlt": "Professional headshot of Surya Partap Singh",
     "primaryCta": "View experience",
     "primaryCtaHref": "#experience",
     "secondaryCta": "Download resume",
@@ -10,11 +12,11 @@
   },
   "about": {
     "heading": "About",
-    "body": "Senior AI-Augmented .NET Developer with 11+ years delivering enterprise applications in C#, Python, ASP.NET Core, .NET Core Web API, and Azure. Practitioner of AI-augmented SDLC using Claude Code, Cursor IDE, GitHub Copilot, and custom MCP servers. Experienced in microservices and Domain-Driven Design across BFSI, Insurance, Utilities, Travel, and Healthcare — with delivery records in the USA and UK."
+    "body": "Senior AI-Augmented .NET Developer and Solution Architect with 15+ years of hands-on experience building enterprise-grade applications using C#, ASP.NET MVC, ASP.NET Core, .NET Web APIs, React, Azure, and AI-assisted SDLC tooling (Cursor, Claude Code, GitHub Copilot, Amazon Q, MCP). Operates as a forward-deployed engineer — embedded inside client engineering teams to design and ship custom solutions. Broad domain expertise across BFSI, Insurance, Travel, Utilities, Healthcare, and Enterprise HR/Payroll, with proven delivery for Fortune 500 customers in the USA and UK."
   },
   "contact": {
     "heading": "Contact",
-    "intro": "Open to conversations about .NET architecture, Azure, and AI-augmented engineering teams.",
+    "intro": "Open to conversations about .NET architecture, Azure/AWS platforms, and AI-augmented engineering teams.",
     "location": "Irvine, California",
     "email": "surya.psingh@yahoo.com",
     "phone": "(949) 617-4866",
@@ -33,32 +35,36 @@
     {
       "code": "AI-103",
       "name": "Microsoft Certified: Azure AI Apps and Agents Developer Associate"
+    },
+    {
+      "code": "TOGAF",
+      "name": "TOGAF Standard 9.2 Certified"
     }
   ],
   "skillGroups": [
     {
       "label": "Languages",
-      "items": "C#, Python, JavaScript, HTML5, Vue 2, Angular, ReactJS, VB.NET"
+      "items": "C#, Python, JavaScript (ES6+), HTML5, CSS, jQuery, React, Vue 2, Angular, VB.NET, UML"
     },
     {
       "label": "AI & LLM",
-      "items": "Azure AI Foundry, Semantic Kernel, LangChain, Claude Code, Cursor IDE, GitHub Copilot, MCP Server, Agents.md, RAG, Prompt Engineering"
+      "items": "GitHub Copilot, Azure AI Foundry, Azure OpenAI, Amazon Bedrock, Semantic Kernel, LangChain, Claude Code, Cursor IDE, MCP Server, Agents.md, RAG, Prompt Engineering"
     },
     {
       "label": "Frameworks",
-      "items": "ASP.NET Core, .NET Core Web API, Entity Framework Core, CQRS, MediatR, AutoMapper, xUnit, NUnit, Moq"
+      "items": "ASP.NET, ASP.NET MVC, ASP.NET Core, .NET Core / .NET Framework, Web API, Entity Framework Core, WPF, WCF, CQRS, MediatR, AutoMapper, xUnit, NUnit, Moq"
     },
     {
       "label": "Architecture",
-      "items": "Microservices, DDD, Clean Architecture, CQRS/SAGA, REST/SOA, SOLID, Repository Pattern, DI"
+      "items": "Microservices, DDD, Clean Architecture, CQRS/SAGA, REST/SOA, SOLID, OOAD/UML, Repository Pattern, DI, Solution Architecture (TOGAF)"
     },
     {
       "label": "Cloud & DevOps",
-      "items": "Azure (App Services, Functions, Blob, AI Search), Docker, Kubernetes, Azure DevOps, Git, DataDog"
+      "items": "AWS, Azure (App Services, Functions, Blob, AI Search, Key Vault), Docker, Kubernetes, Bitbucket, Azure DevOps, Git, CI/CD, ELK, Splunk, DataDog"
     },
     {
       "label": "Data & Security",
-      "items": "SQL Server, PostgreSQL, Oracle, OWASP Top 10, PCI, OAuth 2.0, PGP Encryption"
+      "items": "SQL Server, PostgreSQL, Oracle, MongoDB, OWASP Top 10, PCI, OAuth 2.0, PGP Encryption, Azure Key Vault"
     }
   ],
   "highlights": [
@@ -76,20 +82,33 @@
     },
     {
       "title": "AI-Augmented SDLC",
-      "summary": "End-to-end team workflow with Claude Code, Cursor, and Copilot: story-to-API scaffolding, test generation, and pre-PR review for SOLID, OWASP, and PCI risks."
+      "summary": "End-to-end team workflow with Claude Code, Cursor, Copilot, and Amazon Q: story-to-API scaffolding, test generation, and pre-PR review for SOLID, OWASP, and PCI risks."
     }
   ],
   "experience": [
+    {
+      "company": "Iris Software (Client: ADP)",
+      "location": "Pasadena, California",
+      "role": "Senior .NET Full Stack & AI-Augmented Developer",
+      "domain": "Enterprise HR / Payroll Technology",
+      "dates": "Aug 2026 – Present",
+      "bullets": [
+        "Working on the Time Processor application within ADP’s TLM POD architecture — processing time/punch workflows between TLM Web Application and downstream batch processors.",
+        "Developing and supporting backend services using C#, ASP.NET MVC / .NET, and REST APIs on ADP enterprise platforms.",
+        "Using GitHub Copilot and Amazon Q with VS Code for AI-assisted development; Bitbucket for source control; Oracle DB and AWS in the ADP environment.",
+        "Leading framework upgrades, requirement gathering, and solution design for complex Time Processor enhancements across the full SDLC with CI/CD."
+      ]
+    },
     {
       "company": "Neilson Technology Services",
       "location": "California",
       "role": "Senior .NET Full Stack & AI-Augmented Developer",
       "domain": "Financial Services / Insurance",
-      "dates": "Nov 2021 – Present",
+      "dates": "Nov 2021 – June 2026",
       "bullets": [
         "Delivered microservices APIs with C#, .NET Core Web API, CQRS, MediatR, and Clean DDD for insurance product lifecycle management.",
+        "Developed a Mind-map JSON editor tool to facilitate new product launches.",
         "Owned Canada month-end financial processing (Apr 2023 – Apr 2025): T-error resolution, reconciliation, and regulatory reporting.",
-        "Engineered automated policy certificates, welcome packs, and endorsements — eliminating manual document production.",
         "Built Cortex, a custom MCP server, and AI code/test/review pipelines that accelerated sprint velocity.",
         "Led DataDog observability across 10+ services and authored the NFS Framework instrumentation package."
       ]
@@ -101,7 +120,7 @@
       "domain": "Utilities",
       "dates": "May 2020 – Nov 2021",
       "bullets": [
-        "Developed Move-In/Move-Out, Transfer, Payment Location, and Experian Credit Check microservices using Clean DDD, CQRS, and TDD.",
+        "Developed Move-In/Move-Out, Transfer, Payment Location, and Experian Credit Check microservices using Clean DDD, CQRS, and TDD for Southwest Gas.",
         "Built AI/Analytics reporting for paperless enrollment, auto-pay, registration logs, and credit/ID checks.",
         "Delivered a flexible E-Bill retrieval API across local files, SFTP, and Azure Blob Storage."
       ]
@@ -115,7 +134,8 @@
       "bullets": [
         "Architected Paycard Application (ASP.NET Core MVC + Web API) with microservices/DDD and PGP encryption for PCI compliance.",
         "Built Payroll Validation Tool and enhanced EPIC payroll calculation engine with ReactJS.",
-        "Delivered Azure Cognitive Services POC for Face and Speech Recognition APIs."
+        "Delivered Azure Cognitive Services POC for Face and Speech Recognition APIs.",
+        "Led phased modernization of legacy monolithic applications to microservice-based REST APIs."
       ]
     },
     {
@@ -131,14 +151,14 @@
     },
     {
       "company": "Earlier career (NIIT, HCL, TCS)",
-      "location": "India / UK / USA",
-      "role": "Software Engineer → Senior roles",
-      "domain": "Travel, BFSI, Insurance, Healthcare, Retail",
+      "location": "India / UK / USA / EU",
+      "role": "Software Engineer → Senior & Lead roles",
+      "domain": "Travel, BFSI, Insurance, Healthcare, Retail, Energy",
       "dates": "Jan 2006 – Feb 2016",
       "bullets": [
         "NIIT Technologies: SITA (London), FIS Global, HCC International, Advent Group — ASP.NET MVC, WCF/WPF, DDD/SOA, TDD.",
         "HCL Technologies: internal CRM security and SFA mobile development.",
-        "TCS: global engagements including Nuffield Health, Credit Suisse, Agilent, HAYS, Commerzbank, and others."
+        "TCS: global engagements including Nuffield Health, Credit Suisse, Agilent, HAYS, Commerzbank, Geologix, and Barista Lavazza."
       ]
     }
   ],

@@ -34,6 +34,8 @@ collections:
               - { label: Name, name: name, widget: string }
               - { label: Title, name: title, widget: string }
               - { label: Tagline, name: tagline, widget: text }
+              - { label: Photo path, name: photo, widget: string }
+              - { label: Photo alt text, name: photoAlt, widget: string }
               - { label: Primary CTA label, name: primaryCta, widget: string }
               - { label: Primary CTA link, name: primaryCtaHref, widget: string }
               - { label: Secondary CTA label, name: secondaryCta, widget: string }
