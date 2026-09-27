@@ -1,0 +1,24 @@
+---
+interface Props {
+  heading: string;
+  body: string;
+}
+
+const { heading, body } = Astro.props;
+---
+
+<section class="section" id="about" aria-labelledby="about-heading">
+  <div class="wrap reveal">
+    <p class="eyebrow">Profile</p>
+    <h2 class="section-title" id="about-heading">{heading}</h2>
+    <p class="lede about-body">{body}</p>
+  </div>
+</section>
+
+<style>
+  .about-body {
+    font-size: 1.12rem;
+    color: var(--ink-soft);
+    max-width: 46rem;
+  }
+</style>

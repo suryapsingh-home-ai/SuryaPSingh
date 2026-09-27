@@ -1,0 +1,73 @@
+---
+interface Props {
+  heading: string;
+  intro: string;
+  location: string;
+  email: string;
+  phone: string;
+  linkedin: string;
+  github: string;
+}
+
+const { heading, intro, location, email, phone, linkedin, github } = Astro.props;
+---
+
+<section class="section" id="contact" aria-labelledby="contact-heading">
+  <div class="wrap reveal">
+    <p class="eyebrow">Next step</p>
+    <h2 class="section-title" id="contact-heading">{heading}</h2>
+    <p class="lede">{intro}</p>
+    <ul class="links">
+      <li><span>Location</span> {location}</li>
+      <li>
+        <span>Email</span>
+        <a href={`mailto:${email}`}>{email}</a>
+      </li>
+      <li>
+        <span>Phone</span>
+        <a href={`tel:${phone.replace(/[^\d+]/g, '')}`}>{phone}</a>
+      </li>
+      <li>
+        <span>LinkedIn</span>
+        <a href={linkedin} target="_blank" rel="noopener noreferrer">suryapsingh1979</a>
+      </li>
+      <li>
+        <span>GitHub</span>
+        <a href={github} target="_blank" rel="noopener noreferrer">SuryaPSingh-Projects-Portfolio</a>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .links {
+    list-style: none;
+    margin: 2rem 0 0;
+    padding: 0;
+    max-width: 36rem;
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    border-top: 1px solid var(--line);
+  }
+
+  li:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  span {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  @media (max-width: 520px) {
+    li {
+      grid-template-columns: 1fr;
+      gap: 0.2rem;
+    }
+  }
+</style>

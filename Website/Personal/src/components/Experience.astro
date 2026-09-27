@@ -1,0 +1,110 @@
+---
+interface Job {
+  company: string;
+  location: string;
+  role: string;
+  domain: string;
+  dates: string;
+  bullets: string[];
+}
+
+interface Props {
+  jobs: Job[];
+}
+
+const { jobs } = Astro.props;
+---
+
+<section class="section" id="experience" aria-labelledby="experience-heading">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">Career</p>
+      <h2 class="section-title" id="experience-heading">Experience</h2>
+    </div>
+    <ol class="timeline">
+      {
+        jobs.map((job, index) => (
+          <li class="job reveal" style={`transition-delay: ${index * 60}ms`}>
+            <div class="meta">
+              <p class="dates">{job.dates}</p>
+              <p class="domain">{job.domain}</p>
+            </div>
+            <div class="detail">
+              <h3>{job.role}</h3>
+              <p class="company">
+                {job.company}
+                <span aria-hidden="true"> · </span>
+                {job.location}
+              </p>
+              <ul>
+                {job.bullets.map((bullet) => (
+                  <li>{bullet}</li>
+                ))}
+              </ul>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .timeline {
+    list-style: none;
+    margin: 2rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 1.75rem;
+  }
+
+  .job {
+    display: grid;
+    grid-template-columns: minmax(9rem, 13rem) 1fr;
+    gap: 1rem 1.75rem;
+  }
+
+  .dates {
+    margin: 0;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .domain {
+    margin: 0.35rem 0 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  .detail h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+
+  .company {
+    margin: 0.35rem 0 0.85rem;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .detail ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--ink-soft);
+  }
+
+  .detail li + li {
+    margin-top: 0.45rem;
+  }
+
+  @media (max-width: 800px) {
+    .job {
+      grid-template-columns: 1fr;
+      gap: 0.4rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--line);
+    }
+  }
+</style>

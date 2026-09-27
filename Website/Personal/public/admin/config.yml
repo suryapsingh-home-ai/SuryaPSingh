@@ -1,0 +1,108 @@
+# Sveltia CMS (Decap-compatible) — edit site text in the browser.
+# After deploy: open https://YOUR-SITE/admin/
+#
+# Setup:
+# 1. Update backend.repo to your GitHub owner/repo
+# 2. Create a GitHub OAuth App (or use Sveltia auth) — see README
+# 3. For local edits while developing: keep local_backend true and run
+#    `npx @staticcms/proxy-server` or Decap's local proxy if needed.
+#    Sveltia can also use GitHub auth against a remote repo from localhost.
+
+local_backend: true
+
+backend:
+  name: github
+  repo: suryapsingh-home-ai/SuryaPSingh
+  branch: main
+  base_path: Website/Personal
+
+media_folder: public/uploads
+public_folder: /uploads
+
+collections:
+  - name: site
+    label: Site content
+    files:
+      - name: site
+        label: Portfolio text
+        file: content/site.json
+        fields:
+          - label: Hero
+            name: hero
+            widget: object
+            fields:
+              - { label: Name, name: name, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Tagline, name: tagline, widget: text }
+              - { label: Primary CTA label, name: primaryCta, widget: string }
+              - { label: Primary CTA link, name: primaryCtaHref, widget: string }
+              - { label: Secondary CTA label, name: secondaryCta, widget: string }
+              - { label: Secondary CTA link, name: secondaryCtaHref, widget: string }
+
+          - label: About
+            name: about
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Body, name: body, widget: text }
+
+          - label: Contact
+            name: contact
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Intro, name: intro, widget: text }
+              - { label: Location, name: location, widget: string }
+              - { label: Email, name: email, widget: string }
+              - { label: Phone, name: phone, widget: string }
+              - { label: LinkedIn URL, name: linkedin, widget: string }
+              - { label: GitHub URL, name: github, widget: string }
+
+          - label: Certifications
+            name: certifications
+            widget: list
+            fields:
+              - { label: Code, name: code, widget: string }
+              - { label: Name, name: name, widget: string }
+
+          - label: Skill groups
+            name: skillGroups
+            widget: list
+            fields:
+              - { label: Label, name: label, widget: string }
+              - { label: Items, name: items, widget: text }
+
+          - label: Highlights
+            name: highlights
+            widget: list
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Summary, name: summary, widget: text }
+
+          - label: Experience
+            name: experience
+            widget: list
+            fields:
+              - { label: Company, name: company, widget: string }
+              - { label: Location, name: location, widget: string }
+              - { label: Role, name: role, widget: string }
+              - { label: Domain, name: domain, widget: string }
+              - { label: Dates, name: dates, widget: string }
+              - label: Bullets
+                name: bullets
+                widget: list
+                field: { label: Bullet, name: bullet, widget: text }
+
+          - label: Education
+            name: education
+            widget: list
+            fields:
+              - { label: Degree, name: degree, widget: string }
+              - { label: School, name: school, widget: string }
+              - { label: Dates, name: dates, widget: string }
+
+          - label: Footer
+            name: footer
+            widget: object
+            fields:
+              - { label: Note, name: note, widget: string }

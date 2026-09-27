@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Highlights from '../components/Highlights.astro';
+import Experience from '../components/Experience.astro';
+import Skills from '../components/Skills.astro';
+import Credentials from '../components/Credentials.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+import site from '../../content/site.json';
+
+const pageTitle = `${site.hero.name} · ${site.hero.title}`;
+const description = site.hero.tagline;
+---
+
+<BaseLayout title={pageTitle} description={description}>
+  <Header name={site.hero.name} />
+  <main>
+    <Hero
+      name={site.hero.name}
+      title={site.hero.title}
+      tagline={site.hero.tagline}
+      primaryCta={site.hero.primaryCta}
+      primaryCtaHref={site.hero.primaryCtaHref}
+      secondaryCta={site.hero.secondaryCta}
+      secondaryCtaHref={site.hero.secondaryCtaHref}
+    />
+    <About heading={site.about.heading} body={site.about.body} />
+    <Highlights items={site.highlights} />
+    <Experience jobs={site.experience} />
+    <Skills groups={site.skillGroups} />
+    <Credentials certifications={site.certifications} education={site.education} />
+    <Contact
+      heading={site.contact.heading}
+      intro={site.contact.intro}
+      location={site.contact.location}
+      email={site.contact.email}
+      phone={site.contact.phone}
+      linkedin={site.contact.linkedin}
+      github={site.contact.github}
+    />
+  </main>
+  <Footer name={site.hero.name} note={site.footer.note} />
+</BaseLayout>

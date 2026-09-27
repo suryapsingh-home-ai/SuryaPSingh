@@ -1,0 +1,160 @@
+{
+  "hero": {
+    "name": "Surya Partap Singh",
+    "title": "Senior AI-Augmented .NET Developer",
+    "tagline": "11+ years building enterprise systems in C#, Azure, and AI-assisted delivery — from microservices to MCP-powered developer tooling.",
+    "primaryCta": "View experience",
+    "primaryCtaHref": "#experience",
+    "secondaryCta": "Download resume",
+    "secondaryCtaHref": "resume/Surya_Singh_Resume.docx"
+  },
+  "about": {
+    "heading": "About",
+    "body": "Senior AI-Augmented .NET Developer with 11+ years delivering enterprise applications in C#, Python, ASP.NET Core, .NET Core Web API, and Azure. Practitioner of AI-augmented SDLC using Claude Code, Cursor IDE, GitHub Copilot, and custom MCP servers. Experienced in microservices and Domain-Driven Design across BFSI, Insurance, Utilities, Travel, and Healthcare — with delivery records in the USA and UK."
+  },
+  "contact": {
+    "heading": "Contact",
+    "intro": "Open to conversations about .NET architecture, Azure, and AI-augmented engineering teams.",
+    "location": "Irvine, California",
+    "email": "surya.psingh@yahoo.com",
+    "phone": "(949) 617-4866",
+    "linkedin": "https://linkedin.com/in/suryapsingh1979",
+    "github": "https://github.com/SuryaPSingh-Projects-Portfolio"
+  },
+  "certifications": [
+    {
+      "code": "AZ-305",
+      "name": "Microsoft Certified: Azure Solutions Architect Expert"
+    },
+    {
+      "code": "AZ-204",
+      "name": "Microsoft Certified: Azure Developer Associate"
+    },
+    {
+      "code": "AI-103",
+      "name": "Microsoft Certified: Azure AI Apps and Agents Developer Associate"
+    }
+  ],
+  "skillGroups": [
+    {
+      "label": "Languages",
+      "items": "C#, Python, JavaScript, HTML5, Vue 2, Angular, ReactJS, VB.NET"
+    },
+    {
+      "label": "AI & LLM",
+      "items": "Azure AI Foundry, Semantic Kernel, LangChain, Claude Code, Cursor IDE, GitHub Copilot, MCP Server, Agents.md, RAG, Prompt Engineering"
+    },
+    {
+      "label": "Frameworks",
+      "items": "ASP.NET Core, .NET Core Web API, Entity Framework Core, CQRS, MediatR, AutoMapper, xUnit, NUnit, Moq"
+    },
+    {
+      "label": "Architecture",
+      "items": "Microservices, DDD, Clean Architecture, CQRS/SAGA, REST/SOA, SOLID, Repository Pattern, DI"
+    },
+    {
+      "label": "Cloud & DevOps",
+      "items": "Azure (App Services, Functions, Blob, AI Search), Docker, Kubernetes, Azure DevOps, Git, DataDog"
+    },
+    {
+      "label": "Data & Security",
+      "items": "SQL Server, PostgreSQL, Oracle, OWASP Top 10, PCI, OAuth 2.0, PGP Encryption"
+    }
+  ],
+  "highlights": [
+    {
+      "title": "Cortex",
+      "summary": "Local Ollama-powered AI agent that indexes the monorepo and answers natural-language questions about business logic and defect root-cause for onboarding and incident triage."
+    },
+    {
+      "title": "Custom MCP Server",
+      "summary": "Injects repo-specific Agents.md, architecture rules, and coding standards into AI editor sessions to keep generated code aligned with team conventions."
+    },
+    {
+      "title": "NFS Framework",
+      "summary": ".NET DataDog NuGet package providing plug-and-play instrumentation for Web APIs, Azure Functions, and Hosted Services — adopted across 10+ services."
+    },
+    {
+      "title": "AI-Augmented SDLC",
+      "summary": "End-to-end team workflow with Claude Code, Cursor, and Copilot: story-to-API scaffolding, test generation, and pre-PR review for SOLID, OWASP, and PCI risks."
+    }
+  ],
+  "experience": [
+    {
+      "company": "Neilson Technology Services",
+      "location": "California",
+      "role": "Senior .NET Full Stack & AI-Augmented Developer",
+      "domain": "Financial Services / Insurance",
+      "dates": "Nov 2021 – Present",
+      "bullets": [
+        "Delivered microservices APIs with C#, .NET Core Web API, CQRS, MediatR, and Clean DDD for insurance product lifecycle management.",
+        "Owned Canada month-end financial processing (Apr 2023 – Apr 2025): T-error resolution, reconciliation, and regulatory reporting.",
+        "Engineered automated policy certificates, welcome packs, and endorsements — eliminating manual document production.",
+        "Built Cortex, a custom MCP server, and AI code/test/review pipelines that accelerated sprint velocity.",
+        "Led DataDog observability across 10+ services and authored the NFS Framework instrumentation package."
+      ]
+    },
+    {
+      "company": "Smart Energy Water (SEW)",
+      "location": "California",
+      "role": "Senior .NET Developer",
+      "domain": "Utilities",
+      "dates": "May 2020 – Nov 2021",
+      "bullets": [
+        "Developed Move-In/Move-Out, Transfer, Payment Location, and Experian Credit Check microservices using Clean DDD, CQRS, and TDD.",
+        "Built AI/Analytics reporting for paperless enrollment, auto-pay, registration logs, and credit/ID checks.",
+        "Delivered a flexible E-Bill retrieval API across local files, SFTP, and Azure Blob Storage."
+      ]
+    },
+    {
+      "company": "Randstad Technologies (Princess Cruises)",
+      "location": "California",
+      "role": "Senior .NET Developer",
+      "domain": "Travel & HR",
+      "dates": "Jul 2017 – May 2020",
+      "bullets": [
+        "Architected Paycard Application (ASP.NET Core MVC + Web API) with microservices/DDD and PGP encryption for PCI compliance.",
+        "Built Payroll Validation Tool and enhanced EPIC payroll calculation engine with ReactJS.",
+        "Delivered Azure Cognitive Services POC for Face and Speech Recognition APIs."
+      ]
+    },
+    {
+      "company": "Collabera Inc. (Nationwide Pet Insurance)",
+      "location": "California",
+      "role": "Senior .NET Developer",
+      "domain": "Insurance",
+      "dates": "Feb 2016 – Jul 2017",
+      "bullets": [
+        "Enhanced Quote & Enrollment (QEC) with ASP.NET, MVP, and SOA on Oracle.",
+        "Implemented Oracle Co-Browsing on the customer portal and ASP.NET MVC Web API for third-party aggregation."
+      ]
+    },
+    {
+      "company": "Earlier career (NIIT, HCL, TCS)",
+      "location": "India / UK / USA",
+      "role": "Software Engineer → Senior roles",
+      "domain": "Travel, BFSI, Insurance, Healthcare, Retail",
+      "dates": "Jan 2006 – Feb 2016",
+      "bullets": [
+        "NIIT Technologies: SITA (London), FIS Global, HCC International, Advent Group — ASP.NET MVC, WCF/WPF, DDD/SOA, TDD.",
+        "HCL Technologies: internal CRM security and SFA mobile development.",
+        "TCS: global engagements including Nuffield Health, Credit Suisse, Agilent, HAYS, Commerzbank, and others."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Master of Computer Applications (MCA)",
+      "school": "DAV Institute of Management & Technology | MD University Rohtak",
+      "dates": "Jul 2000 – Jul 2003"
+    },
+    {
+      "degree": "Bachelor of Science (B.Sc.)",
+      "school": "Rajdhani College | University of Delhi",
+      "dates": "Jul 1997 – Jul 2000"
+    }
+  ],
+  "footer": {
+    "note": "Built as a static portfolio with editable content via the Admin module."
+  }
+}

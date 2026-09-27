@@ -1,0 +1,178 @@
+---
+interface Props {
+  name: string;
+  title: string;
+  tagline: string;
+  primaryCta: string;
+  primaryCtaHref: string;
+  secondaryCta: string;
+  secondaryCtaHref: string;
+}
+
+const {
+  name,
+  title,
+  tagline,
+  primaryCta,
+  primaryCtaHref,
+  secondaryCta,
+  secondaryCtaHref,
+} = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+const resolveHref = (href: string) => {
+  if (href.startsWith('#') || href.startsWith('http://') || href.startsWith('https://') || href.startsWith('mailto:')) {
+    return href;
+  }
+  return `${base}${href.replace(/^\//, '')}`;
+};
+---
+
+<section class="hero" id="top" aria-labelledby="hero-name">
+  <div class="hero-plane" aria-hidden="true"></div>
+  <div class="wrap hero-inner">
+    <p class="eyebrow hero-fade">Portfolio</p>
+    <h1 id="hero-name" class="hero-name hero-fade">{name}</h1>
+    <p class="hero-title hero-fade">{title}</p>
+    <p class="hero-tagline hero-fade">{tagline}</p>
+    <div class="hero-actions hero-fade">
+      <a class="btn btn-primary" href={resolveHref(primaryCtaHref)}>{primaryCta}</a>
+      <a class="btn btn-secondary" href={resolveHref(secondaryCtaHref)} download>{secondaryCta}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: calc(100svh - var(--header-h));
+    display: grid;
+    align-items: end;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .hero-plane {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(ellipse 90% 70% at 85% 15%, rgba(70, 110, 160, 0.35), transparent 55%),
+      linear-gradient(145deg, #0b1f3a 0%, #143456 48%, #1a4570 100%);
+    animation: plane-shift 16s ease-in-out infinite alternate;
+  }
+
+  .hero-plane::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(11, 31, 58, 0.15) 0%, transparent 40%, rgba(11, 31, 58, 0.35) 100%),
+      repeating-linear-gradient(
+        -18deg,
+        transparent 0 18px,
+        rgba(255, 255, 255, 0.02) 18px 19px
+      );
+  }
+
+  .hero-inner {
+    padding: clamp(4rem, 12vh, 7rem) 0 clamp(3rem, 8vh, 5rem);
+    color: #f4f6f8;
+    max-width: 48rem;
+  }
+
+  .hero .eyebrow {
+    color: #9eb6d4;
+  }
+
+  .hero-name {
+    margin: 0 0 0.65rem;
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 8vw, 4.6rem);
+    font-weight: 800;
+    letter-spacing: -0.045em;
+    line-height: 0.98;
+  }
+
+  .hero-title {
+    margin: 0 0 1.1rem;
+    font-size: clamp(1.1rem, 2.4vw, 1.35rem);
+    font-weight: 500;
+    color: rgba(244, 246, 248, 0.88);
+  }
+
+  .hero-tagline {
+    margin: 0 0 1.75rem;
+    max-width: 36rem;
+    color: rgba(244, 246, 248, 0.72);
+    font-size: 1.05rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .hero .btn-primary {
+    background: #f4f6f8;
+    color: var(--ink);
+  }
+
+  .hero .btn-primary:hover {
+    background: #fff;
+    color: var(--ink);
+  }
+
+  .hero .btn-secondary {
+    border-color: rgba(244, 246, 248, 0.35);
+    color: #f4f6f8;
+  }
+
+  .hero .btn-secondary:hover {
+    border-color: #9eb6d4;
+    color: #9eb6d4;
+  }
+
+  .hero-fade {
+    opacity: 0;
+    transform: translateY(1rem);
+    animation: rise 800ms ease forwards;
+  }
+
+  .hero-fade:nth-child(1) { animation-delay: 80ms; }
+  .hero-fade:nth-child(2) { animation-delay: 160ms; }
+  .hero-fade:nth-child(3) { animation-delay: 240ms; }
+  .hero-fade:nth-child(4) { animation-delay: 320ms; }
+  .hero-fade:nth-child(5) { animation-delay: 400ms; }
+
+  @keyframes rise {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes plane-shift {
+    from {
+      filter: brightness(1);
+      transform: scale(1);
+    }
+    to {
+      filter: brightness(1.06);
+      transform: scale(1.02);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-plane {
+      animation: none;
+    }
+
+    .hero-fade {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+  }
+</style>
