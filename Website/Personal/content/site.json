@@ -2,7 +2,7 @@
   "hero": {
     "name": "Surya Partap Singh",
     "title": "Senior AI-Augmented .NET Developer / Solution Architect",
-    "tagline": "15+ years building enterprise systems across C#, Azure, AWS, and AI-assisted delivery — embedded with client teams as a forward-deployed engineer.",
+    "tagline": "15+ years building enterprise-grade applications with C#, ASP.NET Core, React, Azure, AWS, and AI-assisted SDLC — embedded with client teams as a forward-deployed engineer.",
     "photo": "images/surya-headshot.jpg",
     "photoAlt": "Professional headshot of Surya Partap Singh",
     "primaryCta": "View experience",
@@ -12,7 +12,7 @@
   },
   "about": {
     "heading": "About",
-    "body": "Senior AI-Augmented .NET Developer and Solution Architect with 15+ years of hands-on experience building enterprise-grade applications using C#, ASP.NET MVC, ASP.NET Core, .NET Web APIs, React, Azure, and AI-assisted SDLC tooling (Cursor, Claude Code, GitHub Copilot, Amazon Q, MCP). Operates as a forward-deployed engineer — embedded inside client engineering teams to design and ship custom solutions. Broad domain expertise across BFSI, Insurance, Travel, Utilities, Healthcare, and Enterprise HR/Payroll, with proven delivery for Fortune 500 customers in the USA and UK."
+    "body": "Senior AI-Augmented .NET Developer / Solution Architect with 15+ years of hands-on experience building enterprise-grade applications using C#, ASP.NET MVC, ASP.NET Core, .NET Core Web APIs, React, Azure, and AI-assisted SDLC tooling (Cursor, Claude Code, GitHub Copilot, Amazon Q, MCP). Operates as a forward-deployed engineer — embedded directly inside client engineering teams building and shipping custom solutions. Has contributed to Tata Consultancy Services (TCS), HCL Technologies, NIIT Technologies, Collabera Inc., Randstad Technologies USA, SEW USA, and Neilson Financial Services in roles from Software Developer through Technical Lead and Project Lead. Broad domain expertise spanning BFSI, Insurance, Travel, Hi-Tech, Retail, Utilities, Healthcare, and Enterprise HR/Payroll. Experienced designing microservices with Domain-Driven Design (DDD), OOAD/UML, SOLID, and design patterns, with strong proficiency in SQL/NoSQL, REST APIs, and front-end delivery. Spearheaded DataDog observability and NuGet instrumentation packages across platforms. Proven delivery across USA and UK with Fortune 500 global customers."
   },
   "contact": {
     "heading": "Contact",
@@ -39,6 +39,10 @@
     {
       "code": "TOGAF",
       "name": "TOGAF Standard 9.2 Certified"
+    },
+    {
+      "code": "SAA-C03",
+      "name": "AWS Certified: Solutions Architect Associate"
     }
   ],
   "skillGroups": [
@@ -48,23 +52,27 @@
     },
     {
       "label": "AI & LLM",
-      "items": "GitHub Copilot, Azure AI Foundry, Azure OpenAI, Amazon Bedrock, Semantic Kernel, LangChain, Claude Code, Cursor IDE, MCP Server, Agents.md, RAG, Prompt Engineering"
+      "items": "GitHub Copilot, Azure AI Foundry, Azure OpenAI, Amazon Bedrock, Semantic Kernel, LangChain, Claude Code, Cursor IDE, MCP Server, Agents.md, RAG, Prompt Engineering, Azure Cognitive Services, LLM Integration"
     },
     {
       "label": "Frameworks",
-      "items": "ASP.NET, ASP.NET MVC, ASP.NET Core, .NET Core / .NET Framework, Web API, Entity Framework Core, WPF, WCF, CQRS, MediatR, AutoMapper, xUnit, NUnit, Moq"
+      "items": "ASP.NET, ASP.NET MVC, ASP.NET Core, .NET Core / .NET Framework, Web API, Entity Framework Core, WPF, WCF, CQRS, MediatR, AutoMapper, Bootstrap, xUnit, NUnit, Moq"
     },
     {
       "label": "Architecture",
-      "items": "Microservices, DDD, Clean Architecture, CQRS/SAGA, REST/SOA, SOLID, OOAD/UML, Repository Pattern, DI, Solution Architecture (TOGAF)"
+      "items": "Microservices, Domain-Driven Design (DDD), Clean Architecture, CQRS/SAGA, REST/SOA, SOLID, OOAD/UML, Repository Pattern, Dependency Injection, Solution Architecture (TOGAF)"
     },
     {
       "label": "Cloud & DevOps",
-      "items": "AWS, Azure (App Services, Functions, Blob, AI Search, Key Vault), Docker, Kubernetes, Bitbucket, Azure DevOps, Git, CI/CD, ELK, Splunk, DataDog"
+      "items": "AWS, Azure (App Services, Functions, Blob Storage, AI Search, Key Vault), Docker, Kubernetes, Bitbucket, Azure DevOps, Git, TFS, SVN, CI/CD, ELK/Elasticsearch, Kibana, Splunk, DataDog, IIS"
     },
     {
-      "label": "Data & Security",
-      "items": "SQL Server, PostgreSQL, Oracle, MongoDB, OWASP Top 10, PCI, OAuth 2.0, PGP Encryption, Azure Key Vault"
+      "label": "Databases",
+      "items": "SQL Server 2016/2014, T-SQL, PostgreSQL, Oracle, MongoDB, NoSQL, SSIS, SSRS, Crystal Reports, Triggers & Stored Procedures"
+    },
+    {
+      "label": "Security",
+      "items": "OWASP Top 10, Web Security, PCI Compliance, PGP Encryption, Mutual Auth, OAuth 2.0, Azure Key Vault, Certificate Management, Postman, Bruno"
     }
   ],
   "highlights": [
@@ -82,7 +90,7 @@
     },
     {
       "title": "AI-Augmented SDLC",
-      "summary": "End-to-end team workflow with Claude Code, Cursor, Copilot, and Amazon Q: story-to-API scaffolding, test generation, and pre-PR review for SOLID, OWASP, and PCI risks."
+      "summary": "End-to-end team workflow with Claude Code, Cursor, and GitHub Copilot: story-to-API scaffolding, test generation, and pre-PR review for SOLID, OWASP, and PCI risks."
     }
   ],
   "experience": [
@@ -93,10 +101,12 @@
       "domain": "Enterprise HR / Payroll Technology",
       "dates": "Aug 2026 – Present",
       "bullets": [
-        "Working on the Time Processor application within ADP’s TLM POD architecture — processing time/punch workflows between TLM Web Application and downstream batch processors.",
-        "Developing and supporting backend services using C#, ASP.NET MVC / .NET, and REST APIs on ADP enterprise platforms.",
-        "Using GitHub Copilot and Amazon Q with VS Code for AI-assisted development; Bitbucket for source control; Oracle DB and AWS in the ADP environment.",
-        "Leading framework upgrades, requirement gathering, and solution design for complex Time Processor enhancements across the full SDLC with CI/CD."
+        "Working on Time Processor application within ADP’s TLM POD architecture, processing time/punch workflows between TLM Web Application and downstream batch processors.",
+        "Working as a Senior .NET Developer developing and supporting backend services using C#, ASP.NET MVC / .NET, and REST APIs on ADP enterprise platforms.",
+        "Using GitHub Copilot with VS Code for AI-assisted development; Bitbucket for source control; Oracle DB and AWS in the ADP environment.",
+        "Framework upgrade of existing applications to latest .NET framework. Working on modernization of Essential Time application via MDF6.",
+        "Requirement gathering and solution design for complex enhancement of the Time Processor applications.",
+        "Involved in all phases of software development from analysis, design, coding, unit testing and release using CI/CD."
       ]
     },
     {
@@ -106,11 +116,23 @@
       "domain": "Financial Services / Insurance",
       "dates": "Nov 2021 – June 2026",
       "bullets": [
-        "Delivered microservices APIs with C#, .NET Core Web API, CQRS, MediatR, and Clean DDD for insurance product lifecycle management.",
-        "Developed a Mind-map JSON editor tool to facilitate new product launches.",
-        "Owned Canada month-end financial processing (Apr 2023 – Apr 2025): T-error resolution, reconciliation, and regulatory reporting.",
-        "Built Cortex, a custom MCP server, and AI code/test/review pipelines that accelerated sprint velocity.",
-        "Led DataDog observability across 10+ services and authored the NFS Framework instrumentation package."
+        "Delivered Microservices APIs using C#, .NET Core Web API, CQRS, MediatR, AutoMapper, and Clean DDD Architecture for insurance product lifecycle management.",
+        "Developed Mind-map JSON editor tool to facilitate new Product launches.",
+        "Owned Canada month-end financial processing (Apr 2023 – Apr 2025): T-error resolution, financial reconciliation, and regulatory reporting.",
+        "Using WPF application engineered automated generation of policy certificates, welcome packs, customer letters, and endorsements — eliminating manual document production.",
+        "Managed Stripe financial reporting connected account notifications, and account balance monitoring integrations.",
+        "Using Python developed solutions for masking PCI-sensitive data in ELK/Elasticsearch (regex redaction) and for data migration from Elasticsearch to Datadog, including dashboards and alerts.",
+        "Supported major reinsurer and branding transitions (GenRe → Munich Re Canada; AIG Life → Aviva Protection Limited) with zero data-loss migration.",
+        "Architected team AI-augmented SDLC end-to-end integrating Claude Code, Cursor IDE, and GitHub Copilot — accelerating sprint velocity and reducing code-review turnaround.",
+        "Built a custom MCP (Model Context Protocol) server that injects repo-specific Agents.md, architecture rules, and coding standards into AI editor sessions.",
+        "Built Cortex — a local Ollama-powered AI agent that indexes the full monorepo and answers natural-language questions about business logic and defect root-cause for onboarding and incident triage.",
+        "Implemented AI code generation: scaffolded .NET Core APIs, CQRS/MediatR handlers, Vue 2 components, and T-SQL from user stories using Cursor/Claude Code with MCP context.",
+        "Implemented AI test generation: auto-generated xUnit/NUnit + Moq unit tests and WebApplicationFactory integration scaffolds with full AAA structure.",
+        "Implemented AI pre-PR code review: diff analysis scanning for SOLID violations, OWASP Top 10, null/async issues, and PCI exposure before human review.",
+        "Led DataDog observability rollout across 10+ services — established dashboards, alerting rules, and runbooks that cut mean time to resolution (MTTR) for production incidents.",
+        "Created NFS Framework .NET DataDog NuGet package providing plug-and-play instrumentation for Web APIs, Azure Functions, and Hosted Services, adopted across all services.",
+        "Led requirement gathering and solution design for complex insurance/financial business problems within application architecture boundaries.",
+        "Contributed across full SDLC — analysis, design, coding, code review, unit testing, configuration, and deployment."
       ]
     },
     {
@@ -120,57 +142,91 @@
       "domain": "Utilities",
       "dates": "May 2020 – Nov 2021",
       "bullets": [
-        "Developed Move-In/Move-Out, Transfer, Payment Location, and Experian Credit Check microservices using Clean DDD, CQRS, and TDD for Southwest Gas.",
-        "Built AI/Analytics reporting for paperless enrollment, auto-pay, registration logs, and credit/ID checks.",
-        "Delivered a flexible E-Bill retrieval API across local files, SFTP, and Azure Blob Storage."
+        "Developed Microservices APIs (Move-In/Move-Out, Transfer Services, Payment Location, Experian Credit Check) for Southwest Gas implementation using Clean DDD, CQRS, and TDD.",
+        "Built AI/Analytics reporting module delivering Paperless Enrollment, Auto Pay Enrollment, Registration Logs, User Login History, and Credit/ID Check Reports for utility clients.",
+        "Developed a flexible E-Bill retrieval API supporting multiple sources: local file system, SFTP, and Azure Blob Storage.",
+        "Resolved production defects and delivered enhancements across SFPUC and Liberty Utility implementations."
       ]
     },
     {
-      "company": "Randstad Technologies (Princess Cruises)",
+      "company": "Randstad Technologies (Client: Princess Cruises)",
       "location": "California",
       "role": "Senior .NET Developer",
       "domain": "Travel & HR",
       "dates": "Jul 2017 – May 2020",
       "bullets": [
-        "Architected Paycard Application (ASP.NET Core MVC + Web API) with microservices/DDD and PGP encryption for PCI compliance.",
-        "Built Payroll Validation Tool and enhanced EPIC payroll calculation engine with ReactJS.",
-        "Delivered Azure Cognitive Services POC for Face and Speech Recognition APIs.",
-        "Led phased modernization of legacy monolithic applications to microservice-based REST APIs."
+        "Architected and developed Paycard Application (ASP.NET Core MVC + .NET Core Web API) using Microservices/DDD with PGP Encryption for PCI compliance.",
+        "Architected and implemented Payroll Validation Tool (ASP.NET MVC Web API + Angular).",
+        "Optimized stored procedures for Bachman crew extraction batch process — significant performance improvement.",
+        "Developed MDMS EPIC Dashboard (ASP.NET) for SQL Agent job monitoring.",
+        "Delivered POC for Microsoft Azure Cognitive Services: Face Recognition and Speech Recognition APIs.",
+        "Enhanced EPIC Web Application Payroll Calculation Engine (.NET Core Web API + ReactJS).",
+        "Architected and developed phased modernization of legacy monolithic applications to microservice-based REST APIs."
       ]
     },
     {
-      "company": "Collabera Inc. (Nationwide Pet Insurance)",
+      "company": "Collabera Inc. (Client: Nationwide Pet Insurance)",
       "location": "California",
       "role": "Senior .NET Developer",
       "domain": "Insurance",
       "dates": "Feb 2016 – Jul 2017",
       "bullets": [
-        "Enhanced Quote & Enrollment (QEC) with ASP.NET, MVP, and SOA on Oracle.",
-        "Implemented Oracle Co-Browsing on the customer portal and ASP.NET MVC Web API for third-party aggregation."
+        "Developed and enhanced QEC (Quote & Enrollment) web application using ASP.NET, MVP pattern, and SOA architecture with Oracle database.",
+        "Implemented Oracle Co-Browsing solution at the customer portal.",
+        "Developed ASP.NET MVC Web API for a third-party aggregation tool.",
+        "Worked on Enterprise Service Bus (ESB) WCF services.",
+        "Completed Salesforce Trailheads (Developer + Admin) and resolved production Salesforce tickets."
       ]
     },
     {
-      "company": "Earlier career (NIIT, HCL, TCS)",
-      "location": "India / UK / USA / EU",
-      "role": "Software Engineer → Senior & Lead roles",
-      "domain": "Travel, BFSI, Insurance, Healthcare, Retail, Energy",
-      "dates": "Jan 2006 – Feb 2016",
+      "company": "NIIT Technologies",
+      "location": "India / UK / USA",
+      "role": "Senior Developer / Technical roles",
+      "domain": "Travel, BFSI, Insurance",
+      "dates": "Apr 2011 – Feb 2016",
       "bullets": [
-        "NIIT Technologies: SITA (London), FIS Global, HCC International, Advent Group — ASP.NET MVC, WCF/WPF, DDD/SOA, TDD.",
-        "HCL Technologies: internal CRM security and SFA mobile development.",
-        "TCS: global engagements including Nuffield Health, Credit Suisse, Agilent, HAYS, Commerzbank, Geologix, and Barista Lavazza."
+        "SITA, London UK (Travel) — ASP.NET MVC risk management reporting application; Agile/SCRUM delivery.",
+        "FIS Global, USA (BFSI) — Qualified Mortgage determination web app; TDD, AngularJS SPA, .NET MVC.",
+        "HCC International, London UK (Insurance) — WCF/WPF SOA app for exposure management; Lloyd's lines; TDD.",
+        "Advent Group, London UK (Insurance) — DDD SOA framework (WCF/WPF) for Lloyd's underwriting & reinsurance."
+      ]
+    },
+    {
+      "company": "HCL Technologies",
+      "location": "India",
+      "role": "Software Developer",
+      "domain": "Enterprise CRM",
+      "dates": "Feb 2010 – Feb 2011",
+      "bullets": [
+        "Internal CRM (Worldwide) — ASP.NET web security implementation; SFA mobile app development."
+      ]
+    },
+    {
+      "company": "Tata Consultancy Services (TCS)",
+      "location": "India / UK / USA / EU",
+      "role": "Software Developer",
+      "domain": "Healthcare, BFSI, HiTech, HR, Energy, Retail",
+      "dates": "Jan 2006 – Apr 2009",
+      "bullets": [
+        "Nuffield Health – Epsom, UK (Healthcare) — POC and project estimation for patient Appointment Module using WCF-based SOA services.",
+        "Credit Suisse – Zurich, Switzerland (BFSI) — POC converting client-server accrual calculation app to WCF-based SOA architecture.",
+        "Agilent Technologies – Delaware, USA (HiTech) — RFP support with hands-on exploration of MOSS 2007 SharePoint features.",
+        "HAYS Recruitment – London, UK (HR) — Configured Bond Adapt tool and developed SharePoint web parts onsite in London.",
+        "Commerzbank – Frankfurt, Germany (BFSI) — POC for capital market risk management covering liquidity forecasting for SMEs.",
+        "Geologix Inc – Norwich, UK (Energy) — Developed GeoStore, a WITSML-based WCF/NHibernate SOA app for geological data storage/retrieval.",
+        "Barista Lavazza – Turin, Italy (Retail) — Implemented Project Brew Windows POS live across 100+ outlets with SAP ERP integration."
       ]
     }
   ],
   "education": [
     {
       "degree": "Master of Computer Applications (MCA)",
-      "school": "DAV Institute of Management & Technology | MD University Rohtak",
+      "school": "DAV Institute of Management & Technology | MD University Rohtak, Haryana, India",
       "dates": "Jul 2000 – Jul 2003"
     },
     {
       "degree": "Bachelor of Science (B.Sc.)",
-      "school": "Rajdhani College | University of Delhi",
+      "school": "Rajdhani College | University of Delhi, New Delhi, India",
       "dates": "Jul 1997 – Jul 2000"
     }
   ],
