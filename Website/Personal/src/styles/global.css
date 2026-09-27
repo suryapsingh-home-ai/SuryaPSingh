@@ -10,6 +10,7 @@
   --accent-soft: rgba(30, 74, 122, 0.1);
   --glow: rgba(30, 74, 122, 0.18);
   --font-display: "Syne", "Segoe UI", sans-serif;
+  --font-name: "Source Serif 4", "Georgia", "Times New Roman", serif;
   --font-body: "IBM Plex Sans", "Segoe UI", sans-serif;
   --space: clamp(1rem, 2vw, 1.5rem);
   --max: 68rem;
